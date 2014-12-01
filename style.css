@@ -1,0 +1,86 @@
+/*
+Theme Name:     Speaker's Bureau Child Theme Template
+Theme URI:      
+Description:    
+Author:         
+Author URI:     
+Template:       uwmwebid
+Version:        0.1
+*/
+/* Please customize the above child theme template header to reflect your organization. */
+/* IMPORTANT: The value of Template must remain "uwmwebid". */
+
+/* IMPORTANT: Please do not remove this line. It is required by the UWM Web Identity parent theme. */
+@import url("../uwmwebid/style.css");
+
+/* Ok! Child theme customization starts below this line. */
+
+
+.entry-meta > ul,
+.entry-meta li {
+    display: inline-block;
+}
+
+#primary #select-result {
+    float: right;
+    position: absolute;
+    right: 0;
+}
+
+/* Speakers and Topics */
+
+#tabs article {
+    overflow: auto;
+    border: 1px solid #222;
+    width: 50%;
+    float: left;
+    height: 240px;
+}
+
+#tabs article .entry-title,
+#tabs article .entry-meta,
+#tabs article .entry-summary {
+    display: block;
+    vertical-align: top;
+    clear: none;
+    margin: 0;
+    padding: 0;
+}
+
+.cpt-thumbnail {
+    margin: 0;
+    float: left;
+    max-width: 200px;
+}
+
+.entry-meta > span {
+    display: block;
+    margin-right: 0;
+}
+
+.cpt-inline-block {
+    display: inline-block;
+}
+
+.cpt-float-left {
+    float: left;
+}
+
+/** How do I get these font icons to work?
+
+.topics-links li:first-child:before {
+    content: "\f301";
+}*/
+
+#tabs.ui-tabs {
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.ui-tabs .ui-tabs-panel {
+    overflow: auto;
+    padding: 0;
+}
+
+
+
