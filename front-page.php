@@ -22,6 +22,15 @@ get_header(); ?>
 					<?php get_sidebar( 'front-page-banner' ); ?>
 				
 					<div class="entry-content">
+						<div class="content-column two_third">
+							<?php 
+							    echo do_shortcode("[metaslider id=157]"); 
+							?>
+						</div>
+						<div class="content-column one_third last_column">
+							<?php get_template_part('searchform-cpt_speakers');?>
+						</div>
+						<div class="clear_column"></div>
 						<?php wp_reset_query(); the_content(); ?>
 						<?php wp_tag_cloud('separator=, '); ?>
 						<?php wp_link_pages( array( 'before' => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentythirteen' ) . '</span>', 'after' => '</div>', 'link_before' => '<span>', 'link_after' => '</span>' ) ); ?>

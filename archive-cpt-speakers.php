@@ -48,7 +48,7 @@ get_header(); ?>
                     foreach ($meta_values as $meta_value => $last_name) {
                         # code...
                         $first_char = substr($last_name, 0, 1);
-                        $first_char_ln[]=$first_char;
+                        $first_char_ln[]=strtoupper($first_char);
                         $first_char_lc = strtolower($first_char_ln[$i]);
                     if ($i==0) {
                         echo "<span class='filters $first_char_lc'><input type='checkbox' name='$first_char_lc' id='$first_char_lc'><label for='$first_char_lc'>$first_char_ln[$i]</label></span>";
