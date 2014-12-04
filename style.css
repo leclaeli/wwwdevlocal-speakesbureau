@@ -34,7 +34,8 @@ Version:        0.1
     border: 1px solid #222;
     width: 50%;
     float: left;
-    height: 240px;
+    height: 310px;
+    padding: 10px;
 }
 
 #tabs article .entry-title,
@@ -45,6 +46,10 @@ Version:        0.1
     clear: none;
     margin: 0;
     padding: 0;
+}
+
+#tabs article section {
+    padding-left: 130px;
 }
 
 .cpt-thumbnail {
@@ -58,9 +63,9 @@ Version:        0.1
     margin-right: 0;
 }
 
-.cpt-inline-block {
+/*.cpt-inline-block {
     display: inline-block;
-}
+}*/
 
 .cpt-float-left {
     float: left;

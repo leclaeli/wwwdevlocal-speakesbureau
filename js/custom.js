@@ -11,9 +11,43 @@ jQuery(document).ready(function ($) {
         $('article').removeClass('found').show();
         var singleValues = $(this).val();
         $("#ptag").html( "<b>Single:</b> " + singleValues);
-        $(".entry-title:contains('" + singleValues + "')" )
+        $(".entry-wrapper:contains('" + singleValues + "')" )
         .parents('article').addClass("found");
         $('article').not(".found").hide();
+    });
+
+    /* A-Z Filter */
+
+    $('[type="checkbox"]').prop('checked', false);
+    
+    $('[type="checkbox"]').change(function(){
+
+        /* Act on the event */
+
+        letter = $(this).siblings('label').text();
+
+        if ($(this).prop('checked')) {
+            $('[data-bookmark='+letter+']').addClass("az-filter");
+            console.log(letter);
+        } else {
+            $('[data-bookmark='+letter+']').removeClass("az-filter");
+            console.log(letter);
+        }
+    
+        /* iterate through array or object */
+    
+        if ($('input:checkbox:checked').length > 0) {
+            $('article').each(function() {
+                $('article').not('.az-filter').hide();
+                $('.az-filter').show();
+                console.log('checked');
+            });
+        } else {
+            $('article').each(function() {
+                $('article').show();
+                console.log('not checked');
+            });
+        } 
     });
 
 //var listItem = $( "#post-35" );

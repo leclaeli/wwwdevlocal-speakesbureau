@@ -4,8 +4,8 @@
         <input type="search" tabindex="1" class="search-field" id="custom-search" placeholder="Search …" value="<?php the_search_query(); ?>" name="s" title="Search for:">
         <div>
         <p id="ptag"></p>
-        <input type="checkbox" name="search-topics" value="yes">Topics
-        <input type="checkbox" name="search-speakers" value="yes">Speakers
+        <!-- <input type="checkbox" name="search-topics" value="yes">Topics
+        <input type="checkbox" name="search-speakers" value="yes">Speakers -->
         </div>
         <!-- in <?php wp_dropdown_categories( 'show_option_all=All Categories&taxonomy=post_tag' ); ?> -->
         <input name="submit" type="submit" id="submit" value="Go">

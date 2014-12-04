@@ -1,12 +1,12 @@
 <?php
-require_once( get_stylesheet_directory() . '/custom-posts.php' );
+require_once( get_stylesheet_directory() . '/custom-post-types.php' );
 
 // Add class to body on cpt pages
 
 // add category nicenames in body and post class
 function add_sidebar_class( $classes ) {
     global $post;
-    if (is_singular('cpt_speakers') || is_singular('cpt_topics' )) {
+    if (is_singular('cpt-speakers') || is_singular('cpt_topics' )) {
   // show adv. #1
         $classes[] = "sidebar-primary";
         return $classes;
@@ -61,7 +61,7 @@ add_action('init', 'set_new_cookie');
 function display_topics($separator = "")
 {
     global $post;
-    $post_objects = get_field('topics');
+    $post_objects = get_field('acf_topics');
     $i=0;
     if($post_objects):
 
@@ -140,12 +140,29 @@ function twentythirteen_entry_meta() {
     // Translators: used between list items, there is a space after the comma.
     $tag_list = get_the_tag_list( '', __( ', ', 'twentythirteen' ) );
     if ( $tag_list ) {
-        echo '<span class="tags-links">' . $tag_list . '</span>';
+        echo '<span class="tags-links">Keywords: ' . $tag_list . '</span>';
     }
 }
 
 /* Change default excerpt length */
-function custom_excerpt_length( $length ) {
+function new_custom_excerpt_length( $length ) {
     return 20;
 }
-add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
+add_filter( 'excerpt_length', 'new_custom_excerpt_length', 999 );
+
+/* Change order for speakers archive page */
+// Runs before the posts are fetched
+add_filter( 'pre_get_posts' , 'my_change_order' );
+// Function accepting current query
+function my_change_order( $query ) {
+    // Check if the query is for an archive
+    if($query->is_archive && !is_admin() && is_post_type_archive('cpt-speakers'))
+        // Query was for archive, then set order
+        $query->set( 'meta_key', 'last_name' );
+        $query->set( 'orderby', 'meta_value' );
+        $query->set( 'order', 'ASC' );
+    // Return the query (else there's no more query, oops!)
+    return $query;
+}
+
+
