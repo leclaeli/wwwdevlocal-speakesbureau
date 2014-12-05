@@ -27,6 +27,29 @@ Version:        0.1
     right: 0;
 }
 
+/* Home Page */
+
+#search-container {
+    position: relative;
+    width: 76%;
+    display: inline-block;
+}
+
+#home-s-form input[type="search"] {
+    width: 100%;
+}
+
+.search-dropdown-container {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    overflow: auto;
+    background: #eee;
+    border: 2px solid #f2f2f2;
+    margin-top: -19px;
+}
+
 /* Speakers and Topics */
 
 #tabs article {
@@ -73,9 +96,12 @@ Version:        0.1
 
 /** How do I get these font icons to work?
 
-.topics-links li:first-child:before {
-    content: "\f301";
-}*/
+.font-test li:before {
+    content: '\f055';
+    font: normal 12px/1 FontAwesome;
+    display: inline-block;
+    float: left;
+} */
 
 #tabs.ui-tabs {
     font-size: inherit;

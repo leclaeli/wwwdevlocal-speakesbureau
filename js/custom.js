@@ -98,10 +98,25 @@ $( ".ui-icon" ).toggle(function() {
 $('.'+index).remove();
 });
 
+    /* jQuery Ui Tabs */
 
- $(function() {
-$( "#tabs" ).tabs();
-});
+    $(function() {
+        $( "#tabs" ).tabs();
+    });
+
+    /* Front Page Search Filter */
+
+    $( "#home-search" ).keyup(function() {
+        if( $('#home-search').val() ) {
+            $('.search-dropdown-container').show();
+        } else {
+            $('.search-dropdown-container').hide();
+        }
+        $('.search-dropdown-container li').removeClass('found').show();
+        var singleValues = $(this).val();
+        $(".search-dropdown-container li:contains('" + singleValues + "')" ).addClass("found");
+        $('.search-dropdown-container li').not(".found").hide();
+    });
 
 });
 

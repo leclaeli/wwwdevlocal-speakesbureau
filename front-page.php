@@ -28,7 +28,7 @@ get_header(); ?>
 							?>
 						</div>
 						<div class="content-column one_third last_column">
-							<?php get_template_part('searchform-cpt_speakers');?>
+							<?php get_template_part('searchform-front-page');?>
 						</div>
 						<div class="clear_column"></div>
 						<?php wp_reset_query(); the_content(); ?>
