@@ -86,17 +86,17 @@ jQuery(document).ready(function ($) {
 
     var title = $("article:nth-child(5)").text();
    
-$( ".ui-icon" ).toggle(function() {
-    $(this).removeClass('ui-icon-circle-plus').addClass('ui-icon-circle-minus');
-    // `this` is the DOM element that was clicked
-    var index = $( ".ui-icon" ).index( this );
-    $( "#select-result" ).append( "<p class='" + index + "'>" + index + "</p>");
+    $( ".ui-icon" ).toggle(function() {
+        $(this).removeClass('ui-icon-circle-plus').addClass('ui-icon-circle-minus');
+        // `this` is the DOM element that was clicked
+        var index = $( ".ui-icon" ).index( this );
+        $( "#select-result" ).append( "<p class='" + index + "'>" + index + "</p>");
 
-    }, function() {
-    $(this).removeClass('ui-icon-circle-minus').addClass('ui-icon-circle-plus');
-    var index = $( ".ui-icon" ).index( this );
-$('.'+index).remove();
-});
+        }, function() {
+        $(this).removeClass('ui-icon-circle-minus').addClass('ui-icon-circle-plus');
+        var index = $( ".ui-icon" ).index( this );
+    $('.'+index).remove();
+    });
 
     /* jQuery Ui Tabs */
 
@@ -107,16 +107,31 @@ $('.'+index).remove();
     /* Front Page Search Filter */
 
     $( "#home-search" ).keyup(function() {
+        var singleValues = $(this).val();
+        $('.search-dropdown-container li').removeClass('found').show();
         if( $('#home-search').val() ) {
+            console.log(singleValues);
             $('.search-dropdown-container').show();
+            $(".search-dropdown-container li:contains('" + singleValues + "')" ).addClass("found");
+            $('.search-dropdown-container li').not(".found").hide();
+            if(!$(".search-dropdown-container li").hasClass("found")){
+                $(".search-dropdown-container").hide();
+            }
         } else {
             $('.search-dropdown-container').hide();
         }
-        $('.search-dropdown-container li').removeClass('found').show();
-        var singleValues = $(this).val();
-        $(".search-dropdown-container li:contains('" + singleValues + "')" ).addClass("found");
-        $('.search-dropdown-container li').not(".found").hide();
     });
 
+    /* Magnific pop-up */
+
+    $('.galleryid-96').magnificPopup({
+        delegate: 'a', // child items selector, by clicking on it popup will open
+        type: 'image',
+        // other options
+        gallery: {
+            // options for gallery
+            enabled: true
+        },
+    });
 });
 

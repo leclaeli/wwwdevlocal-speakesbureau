@@ -27,7 +27,7 @@ get_header(); ?>
 							    echo do_shortcode("[metaslider id=157]"); 
 							?>
 						</div>
-						<div class="content-column one_third last_column">
+						<div class="searchform-home content-column one_third last_column">
 							<?php get_template_part('searchform-front-page');?>
 						</div>
 						<div class="clear_column"></div>

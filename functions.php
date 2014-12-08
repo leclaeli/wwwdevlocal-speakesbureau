@@ -92,6 +92,7 @@ Topics: ';
 function custom_js_script()
 {
     wp_enqueue_script('custom-script', get_stylesheet_directory_uri() . '/js/custom.js', array( 'jquery'), false, false);
+    wp_enqueue_script('magnific-script', get_stylesheet_directory_uri() . '/js/magnific.js', array( 'jquery'), false, false);
     wp_enqueue_script('jquery-ui-selectable');
     wp_enqueue_script('jquery-ui-tabs');
     wp_enqueue_style('plugin_name-admin-ui-css',

@@ -15,10 +15,11 @@
                 <?php endforeach; 
                 wp_reset_postdata();?>
                 </ul>
-             <!--    <p id="ptag"></p> -->
+                
             </div>
         </div>
         <input name="submit" type="submit" id="submit" value="Go">
+        <p id="ptag"></p>
          <!-- in <?php wp_dropdown_categories( 'show_option_all=All Categories' ); ?> -->
     </label>
     <!-- <div class="search-results"></div> -->
