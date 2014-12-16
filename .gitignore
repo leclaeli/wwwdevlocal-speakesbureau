@@ -1,4 +1,6 @@
 *.log
+._.DS_Store
+._gw-gravity-forms-map-fields-to-field.php
 .htaccess
 sitemap.xml
 sitemap.xml.gz

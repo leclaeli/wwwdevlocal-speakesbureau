@@ -1,5 +1,6 @@
 <?php
 require_once( get_stylesheet_directory() . '/custom-post-types.php' );
+require_once( get_stylesheet_directory() . '/gw-gravity-forms-map-fields-to-field.php' );
 
 // Add class to body on cpt pages
 
@@ -92,6 +93,7 @@ Topics: ';
 function custom_js_script()
 {
     wp_enqueue_script('custom-script', get_stylesheet_directory_uri() . '/js/custom.js', array( 'jquery'), false, false);
+    wp_enqueue_script('elijah-script', get_stylesheet_directory_uri() . '/js/elijah.js', array( 'jquery'), false, false);
     wp_enqueue_script('magnific-script', get_stylesheet_directory_uri() . '/js/magnific.js', array( 'jquery'), false, false);
     wp_enqueue_script('jquery-ui-selectable');
     wp_enqueue_script('jquery-ui-tabs');
@@ -115,18 +117,19 @@ add_action('wp_enqueue_scripts', 'custom_js_script');
 /* Add custom post types to taxonomy pages */
 
 function add_custom_types_to_tax( $query ) {
-if( is_category() || is_tag() && empty( $query->query_vars['suppress_filters'] ) ) {
+    if( is_category() || is_tag() && empty( $query->query_vars['suppress_filters'] ) ) {
 
-// Get all your post types
-$post_types = get_post_types();
+        // Get all your post types
+        $post_types = get_post_types();
 
-$query->set( 'post_type', $post_types );
-return $query;
-}
+        $query->set( 'post_type', $post_types );
+        return $query;
+    }
 }
 add_filter( 'pre_get_posts', 'add_custom_types_to_tax' );
 
 /* Custom entry_meta for child theme */
+
 function twentythirteen_entry_meta() {  
     
     if ( ! has_post_format( 'link' ) && 'post' == get_post_type() )
@@ -166,4 +169,18 @@ function my_change_order( $query ) {
     return $query;
 }
 
+/* Update ACF Fields with Form input */
+add_action("gform_after_submission_1", "acf_post_submission", 10, 2);
+ 
+function acf_post_submission ($entry, $form) {
+    $post_id = $entry["post_id"];
 
+    update_field('field_548a088742ae7', $entry['3'], $post_id);
+    update_field('field_548a08c442ae8', $entry['4'], $post_id);
+    update_field('field_548a08ed42aea', $entry['5'], $post_id);
+    update_field('field_548a099242aeb', $entry['7'], $post_id);
+    update_field('field_548a09bc42aec', array($entry['8.1'], $entry['8.2'], $entry['8.3']), $post_id);
+}
+
+/* Add custom image size */
+add_image_size( 'homepage-thumb', 64, 64, array('center','top') ); // (cropped)

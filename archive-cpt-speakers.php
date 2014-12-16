@@ -51,7 +51,7 @@ get_header(); ?>
                         $first_char_ln[]=strtoupper($first_char);
                         $first_char_lc = strtolower($first_char_ln[$i]);
                     if ($i==0) {
-                        echo "<span class='filters $first_char_lc'><input type='checkbox' name='$first_char_lc' id='$first_char_lc'><label for='$first_char_lc'>$first_char_ln[$i]</label></span>";
+                        echo "<span class='az-checkbox'><input type='checkbox' name='$first_char_lc' id='$first_char_lc'><label for='$first_char_lc'>$first_char_ln[$i]</label></span>";
                         $w = 0; }
                         else {
                         $w = 1;
@@ -61,7 +61,7 @@ get_header(); ?>
                     if ($i>0) {
                         echo " | ";
                     } 
-                        echo "<span class='filters $first_char_lc'><input type='checkbox' name='$first_char_lc' id='$first_char_lc'><label for='$first_char_lc'>$first_char_ln[$i]</label></span>";
+                        echo "<span class='az-checkbox'><input type='checkbox' name='$first_char_lc' id='$first_char_lc'><label for='$first_char_lc'>$first_char_ln[$i]</label></span>";
                     } 
                        $i++;    
                     }
@@ -75,7 +75,7 @@ get_header(); ?>
                 <ul>
                 <li><a href="#tabs-1">Speakers</a></li>
 
-                <li><a href="#tabs-2">Topics</a></li>
+                <li><a href="#topics">Topics</a></li>
                 </ul>
                 <div id="tabs-1">
                        <?php /* The loop */ ?>
@@ -122,7 +122,7 @@ get_header(); ?>
             <?php get_template_part( 'content', 'none' ); ?>
         <?php endif; ?>
                 </div>
-                <div id="tabs-2">
+                <div id="topics">
                     <?php wp_list_categories('orderby=name&taxonomy=topics'); ?>
                     
                 </div>
@@ -135,8 +135,8 @@ get_header(); ?>
 
         </div><!-- #primary -->
         
-        <?php get_sidebar( 'primary' ); ?>
-        <?php get_sidebar( 'subsidiary' ); ?>
+        <?php //get_sidebar( 'primary' ); ?>
+        <?php //get_sidebar( 'subsidiary' ); ?>
         
     </div><!-- #content -->
 

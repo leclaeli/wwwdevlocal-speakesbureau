@@ -6,36 +6,27 @@ jQuery(document).ready(function ($) {
         };
     });
 
-    // jquery filter
-    $( "#custom-search" ).keyup(function() {
-        $('article').removeClass('found').show();
-        var singleValues = $(this).val();
-        $("#ptag").html( "<b>Single:</b> " + singleValues);
-        $(".entry-wrapper:contains('" + singleValues + "')" )
-        .parents('article').addClass("found");
-        $('article').not(".found").hide();
-    });
 
     /* A-Z Filter */
 
-    $('[type="checkbox"]').prop('checked', false);
+    $('.az-checkbox [type="checkbox"]').prop('checked', false);
     
-    $('[type="checkbox"]').change(function(){
+    $('.az-checkbox [type="checkbox"]').change(function(){
 
-        /* Act on the event */
-
+        //Act on the event */
         letter = $(this).siblings('label').text();
 
         if ($(this).prop('checked')) {
             $('[data-bookmark='+letter+']').addClass("az-filter");
+            $(this).siblings('label').addClass('checked');
             console.log(letter);
         } else {
             $('[data-bookmark='+letter+']').removeClass("az-filter");
+            $(this).siblings('label').removeClass('checked');
             console.log(letter);
         }
     
-        /* iterate through array or object */
-    
+        //iterate through array or object
         if ($('input:checkbox:checked').length > 0) {
             $('article').each(function() {
                 $('article').not('.az-filter').hide();
@@ -48,6 +39,21 @@ jQuery(document).ready(function ($) {
                 console.log('not checked');
             });
         } 
+    });
+
+    /* jQuery Search Filter */
+
+    $( "#custom-search" ).keyup(function() {
+        var singleValues = $(this).val();
+        $('article').removeClass('found').show();
+        if($("article").hasClass("az-filter")){
+            $(".az-filter .entry-wrapper:contains('" + singleValues + "')" ).parents('article').addClass("found");
+        } else {
+            $(".entry-wrapper:contains('" + singleValues + "')" ).parents('article').addClass("found");
+        }
+        
+        $('article').not(".found").hide();
+        //$("#ptag").html( "<b>Single:</b> " + singleValues);
     });
 
 //var listItem = $( "#post-35" );
@@ -105,7 +111,9 @@ jQuery(document).ready(function ($) {
     });
 
     /* Front Page Search Filter */
-
+    $( "#home-search" ).blur(function() {
+        $('.search-dropdown-container').hide();
+    });
     $( "#home-search" ).keyup(function() {
         var singleValues = $(this).val();
         $('.search-dropdown-container li').removeClass('found').show();
@@ -122,16 +130,7 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    /* Magnific pop-up */
-
-    $('.galleryid-96').magnificPopup({
-        delegate: 'a', // child items selector, by clicking on it popup will open
-        type: 'image',
-        // other options
-        gallery: {
-            // options for gallery
-            enabled: true
-        },
-    });
+    /* Move Tag Cloud */
+    $( ".tag-cloud p" ).replaceWith( $( "#tag-cloud" ) );
 });
 

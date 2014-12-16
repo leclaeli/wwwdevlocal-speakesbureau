@@ -22,17 +22,40 @@ get_header(); ?>
 					<?php get_sidebar( 'front-page-banner' ); ?>
 				
 					<div class="entry-content">
-						<div class="content-column two_third">
-							<?php 
-							    echo do_shortcode("[metaslider id=157]"); 
-							?>
-						</div>
-						<div class="searchform-home content-column one_third last_column">
-							<?php get_template_part('searchform-front-page');?>
+						<div id="home-slider-container">
+							<div class="content-column two_third">
+								<?php 
+								    echo do_shortcode("[metaslider id=157]"); 
+								?>
+							</div>
+							<div class="searchform-home content-column one_third last_column">
+								<h4>Quick Search</h4>
+								<?php get_template_part('searchform-front-page');?>
+							</div>
 						</div>
 						<div class="clear_column"></div>
 						<?php wp_reset_query(); the_content(); ?>
-						<?php wp_tag_cloud('separator=, '); ?>
+						<?php $cloud_args = array(
+							'smallest'                  => 12, 
+							'largest'                   => 26,
+							'unit'                      => 'px', 
+							'number'                    => 25,  
+							'format'                    => 'flat',
+							'separator'                 => "\n",
+							'orderby'                   => 'name', 
+							'order'                     => 'RAND',
+							'exclude'                   => null, 
+							'include'                   => null, 
+							'topic_count_text_callback' => '',
+							'link'                      => 'view', 
+							'taxonomy'                  => 'post_tag', 
+							'echo'                      => true,
+							'child_of'                  => null, // see Note!
+						); ?>
+						<div id="tag-cloud">
+							<h4>Topic Keywords</h4>
+							<?php wp_tag_cloud($cloud_args); ?>
+						</div>
 						<?php wp_link_pages( array( 'before' => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentythirteen' ) . '</span>', 'after' => '</div>', 'link_before' => '<span>', 'link_after' => '</span>' ) ); ?>
 					</div><!-- .entry-content -->
 
@@ -42,7 +65,7 @@ get_header(); ?>
 
 		</div><!-- #primary -->
 		
-		<?php get_sidebar( 'primary' ); ?>
+		<?php //get_sidebar( 'primary' ); ?>
 		<?php get_sidebar( 'subsidiary' ); ?>
 		
 	</div><!-- #content -->

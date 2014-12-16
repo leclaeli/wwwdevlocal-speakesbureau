@@ -18,26 +18,39 @@ Version:        0.1
 
 .entry-meta > ul,
 .entry-meta li {
-    display: inline-block;
+  display: inline-block;
 }
 
 #primary #select-result {
-    float: right;
-    position: absolute;
-    right: 0;
+  float: right;
+  position: absolute;
+  right: 0;
 }
 
 /* Home Page */
 
+#home-slider-container {
+  margin-bottom: 40px;
+  overflow: hidden;
+}
+
 .searchform-home {
-    background: #5382af;
+    background: rgba(83,130,175,1);
     height: 250px;
-    padding: 10px;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.searchform-home h4 {
+    font-weight: 300;
+    color: #fff;
+    border-bottom: 4px solid #d06d34;
+    padding-bottom: 10px;
 }
 
 #search-container {
     position: relative;
-    width: 76%;
+    width: 73%;
     display: inline-block;
 }
 
@@ -45,18 +58,206 @@ Version:        0.1
     width: 100%;
 }
 
-.search-dropdown-container {
-    display: none;
-    position: absolute;
-    width: 100%;
-    height: 100px;
-    overflow: auto;
-    border: 2px solid #ccc;
-    margin-top: -22px;
-    background: #fff;
+#home-s-form input[type="submit"] {
+    height: 53px;
 }
 
+.search-dropdown-container {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 150px;
+  overflow: auto;
+  border: 2px solid #ccc;
+  margin-top: -22px;
+  background: #fff;
+}
+
+.search-dropdown-container ul {
+    list-style: none;
+    padding: 10px 14px;
+}
+
+#home-browse {
+  margin: 0;
+  padding: 0 25px;
+}
+
+#home-browse li {
+  color: #d06d34;
+}
+
+#home-browse a {
+  color: #fff;
+}
+
+.home-info {
+  padding-right: 40px;
+}
+
+/* Tag Cloud */
+#tag-cloud {
+  padding: 20px;
+  text-align: center;
+  background: #ececec;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#tag-cloud h4 {
+  text-align: left;
+  font-weight: 300;
+}
+
+/* Collapsable Info */
+`
+.collapse-info {
+  background: none repeat scroll 0 0 #ccc;
+  padding: 30px 15px 0;
+}
+.home .one_half {
+  position: relative;
+  margin-bottom: 30px;
+  padding: 0px 15px;
+  display: table;
+}
+
+.collapseomatic {
+  background: #ececec;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0px;
+  padding: 20px 20px 20px 80px;
+  display: table-cell;
+  width: 100%;
+  height: 100px;
+  vertical-align: middle;
+}
+
+.collapseomatic:hover {
+  text-decoration: none;
+}
+
+.one_half .collapseomatic {
+  min-height: 100px;
+}
+
+.collapseomatic:before {
+  color: #d06d34;
+  content: "";
+  display: inline-block;
+  font: 40px/1 FontAwesome;
+  left: 40px;
+  top: 32px;
+  padding: 0;
+  position: absolute;
+}
+
+.colomat-close:before {
+  /*color: #fc0;*/
+  color: #d06d34;
+  content: "\f139";
+}
+
+.colomat-close, .colomat-close:hover {
+  background: none repeat scroll 0 0 #474d52;
+  color: #fff;
+}
+
+.home .collapseomatic_content {
+  background: none repeat scroll 0 0 #f8f8f8;
+  border-bottom: 1px solid #ccc;
+  margin: 0;
+  padding: 30px 20px;
+  display: table-footer-group;
+}
+
+.home .collapseomatic_content ul {
+  list-style: none;
+  padding: 0
+}
+
+.home .collapseomatic_content p,
+.home .collapseomatic_content ul li {
+  padding: 20px 20px 0;
+}
+
+#featured-home {
+  background: #474d52;
+  border: 1px solid #474d52;
+  clear: both;
+  border-radius: 4px;
+}
+
+#featured-home .one_third {
+  padding: 20px;
+}
+
+#featured-home .one_third:first-child {
+}
+
+#featured-home h4 {
+  color: #fff;
+  font-weight: 300;
+  border-bottom: 4px solid #5382af;
+  padding: 10px 0;
+}
+
+#featured-home .display-posts-listing {
+  list-style: none;
+  padding: 0;
+}
+
+#featured-home .display-posts-listing li {
+  padding: 10px;
+}
+
+#featured-home .display-posts-listing li .image img {
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 1px #bbb;
+  margin-right: 10px;
+}
+
+#featured-home a {
+  color: #fff;
+}
+
+
+
 /* Speakers and Topics */
+
+.az-checkbox {
+  background: #ddd;
+}
+
+.az-checkbox .checked {
+  background: #252525;
+  color: #fff;
+}
+
+.az-checkbox label {
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  text-align: center;
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  line-height: 1.3rem;
+}
+
+.az-checkbox label:hover {
+    color: #fff;
+    background: #252525;
+    cursor: pointer;
+}
+
+.az-checkbox > input {
+    left: -10000px;
+    position: absolute;
+}
 
 #tabs article {
     overflow: auto;
@@ -110,13 +311,13 @@ Version:        0.1
 } */
 
 #tabs.ui-tabs {
-    font-size: inherit;
-    font-family: inherit;
+  font-size: inherit;
+  font-family: inherit;
 }
 
 .ui-tabs .ui-tabs-panel {
-    overflow: auto;
-    padding: 0;
+  overflow: auto;
+  padding: 0;
 }
 
 
