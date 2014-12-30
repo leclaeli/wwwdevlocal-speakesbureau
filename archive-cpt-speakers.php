@@ -36,9 +36,9 @@ get_header(); ?>
                     endif;
                 ?></h1>
                 <?php get_template_part('searchform-cpt_speakers');?>
+                <div class="az-placeholder">
                 <?php /* A-Z listing */ 
                     $i = 0;
-                    $t = 0;
                     $first_char_ln = array();
                     //$first_char_lnt = array();
                     while (have_posts()) : the_post(); {
@@ -59,7 +59,7 @@ get_header(); ?>
                     if ($first_char_ln[$i] != $first_char_ln[$i-$w]) {
 
                     if ($i>0) {
-                        echo " | ";
+                        echo "";
                     } 
                         echo "<span class='az-checkbox'><input type='checkbox' name='$first_char_lc' id='$first_char_lc'><label for='$first_char_lc'>$first_char_ln[$i]</label></span>";
                     } 
@@ -68,75 +68,94 @@ get_header(); ?>
                     }
                     endwhile; 
                 ?>
+                </div>
+                <div class="az-filter"></div> <!-- to be filled via jQuery -->
             </header><!-- .page-header -->
 
             <div id="tabs">
-
                 <ul>
-                <li><a href="#tabs-1">Speakers</a></li>
-
-                <li><a href="#topics">Topics</a></li>
+                    <li><a href="#speakers">Speakers</a></li>
+                    <li><a href="#topics">Topics</a></li>
+                    <li><a href="#presentations">Presentations</a></li>
                 </ul>
-                <div id="tabs-1">
-                       <?php /* The loop */ ?>
-        <?php while (have_posts()) : the_post(); ?>
-            <?php $meta_values = get_post_meta( $post->ID, 'last_name' ); 
-                foreach ($meta_values as $meta_value => $last_name) {
-                    $first_char = substr($last_name, 0, 1);
-                }
-            ?>
-            <article id="post-<?php the_ID(); ?>" <?php post_class(); ?> data-bookmark="<?php echo $first_char; ?>">
-                <?php if ( has_post_thumbnail() && ! post_password_required() ) : ?>
-                <div class="cpt-thumbnail">
-                    <a href="<?php echo get_permalink(); ?>"><?php the_post_thumbnail('medium'); ?></a>
-                </div>
+                <div id="speakers">
+                    <div id="speaker-container">
+                        <?php /* The loop */ ?>
+                        <?php while (have_posts()) : the_post(); ?>
+                        <?php $meta_values = get_post_meta( $post->ID, 'last_name' ); 
+                            foreach ($meta_values as $meta_value => $last_name) {
+                                $first_char = substr($last_name, 0, 1);
+                            }
+                        ?>
+                        <article id="post-<?php the_ID(); ?>" <?php post_class(); ?> data-bookmark="<?php echo $first_char; ?>">
+                            <?php if ( has_post_thumbnail() && ! post_password_required() ) : ?>
+                            <div class="cpt-thumbnail">
+                                <a href="<?php echo get_permalink(); ?>"><?php the_post_thumbnail('speakers-thumb'); ?></a>
+                            </div>
+                            <?php endif; ?>
+                            <section class="entry-wrapper">
+                                <h1 class="entry-title">
+                                        <a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a>
+                                </h1>
+                                    
+                                <div class="entry-meta">
+                                    <?php display_topics(", "); ?>
+                                    <?php echo get_the_term_list( $post->ID, 'topics', 'Topics: ', ', ' ); ?>
+                                    <?php twentythirteen_entry_meta(); ?>
+                                </div><!-- .entry-meta -->
+
+                                <?php if ( is_search() || is_archive() )  : // Only display Excerpts for Search and Archives ?>
+                                <div class="entry-summary">
+                                    <?php //the_excerpt(); ?>
+                                </div><!-- .entry-summary -->
+                                <?php else : ?>
+                                <div class="entry-content">
+                                    <?php the_content( __( 'Continue reading <span class="meta-nav">&rarr;</span>', 'twentythirteen' ) ); ?>    
+                                    <?php wp_link_pages( array( 'before' => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentythirteen' ) . '</span>', 'after' => '</div>', 'link_before' => '<span>', 'link_after' => '</span>' ) ); ?>
+                                </div><!-- .entry-content -->
+                            </section><!-- .entry-wrapper -->
+                        <?php endif; ?>
+                        </article><!-- #post -->        
+                        <?php endwhile; ?>
+                    </div><!-- end #speaker-container -->
+                    <?php
+                        $count_posts = wp_count_posts('cpt-speakers');
+                        $count_spk_posts = ($count_posts->publish);
+                        //print_r($count_spk_posts);
+                        $max_pages = ceil($count_spk_posts/3);
+                        print_r($max_pages);
+                    ?>
+                    <?php for ($i=2; $i < $max_pages+1 ; $i++) { ?> 
+                        <div id="speaker-container-<?php echo $i ?>"></div>
+                        <div class="clear" style="clear:both;">
+                            <ul id='PaginationExample'>
+                                <li><?php next_posts_link('Load More') ?></li>
+                                <li><?php previous_posts_link('Newer Entries &raquo;') ?></li>
+                            </ul>
+                        </div>
+                    <?php } ?>
+                </div><!-- #speakers -->
+                <?php //twentythirteen_paging_nav(); ?>
+                
+
+                <?php else : ?>
+                    <?php get_template_part( 'content', 'none' ); ?>
                 <?php endif; ?>
-                <section class="entry-wrapper">
-                    <h1 class="entry-title">
-                            <a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a>
-                    </h1>
-                        
-                    <div class="entry-meta">
-                        <?php display_topics(", "); ?>
-                        <?php echo get_the_term_list( $post->ID, 'topics', 'Topics: ', ', ' ); ?>
-                        <?php twentythirteen_entry_meta(); ?>
-                    </div><!-- .entry-meta -->
-
-                    <?php if ( is_search() || is_archive() )  : // Only display Excerpts for Search and Archives ?>
-                    <div class="entry-summary">
-                        <?php the_excerpt(); ?>
-                    </div><!-- .entry-summary -->
-                    <?php else : ?>
-                    <div class="entry-content">
-                        <?php the_content( __( 'Continue reading <span class="meta-nav">&rarr;</span>', 'twentythirteen' ) ); ?>    
-                        <?php wp_link_pages( array( 'before' => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentythirteen' ) . '</span>', 'after' => '</div>', 'link_before' => '<span>', 'link_after' => '</span>' ) ); ?>
-                    </div><!-- .entry-content -->
-                </section><!-- .entry-wrapper -->
-            <?php endif; ?>
-            </article><!-- #post -->        
-         <?php endwhile; ?>
-
-            <?php twentythirteen_paging_nav(); ?>
-
-        <?php else : ?>
-            <?php get_template_part( 'content', 'none' ); ?>
-        <?php endif; ?>
-                </div>
+                
                 <div id="topics">
                     <?php wp_list_categories('orderby=name&taxonomy=topics'); ?>
-                    
                 </div>
-            </div>
-
-
-
-
-     
+                <div id="presentations">
+                    List of presentations 
+                </div>
+            </div> <!-- #tabs -->
+<p>
+    <input type="hidden" name="GreetingAll" id="GreetingAll" value="Hello Everyone!" />
+    <input type="submit" id="PleasePushMe" />
+    <div id="test-div1"></div>
+</p>  
 
         </div><!-- #primary -->
-        
-        <?php //get_sidebar( 'primary' ); ?>
-        <?php //get_sidebar( 'subsidiary' ); ?>
         
     </div><!-- #content -->
 

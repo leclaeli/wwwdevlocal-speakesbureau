@@ -65,7 +65,7 @@ get_header(); ?>
 
 		</div><!-- #primary -->
 		
-		<?php //get_sidebar( 'primary' ); ?>
+		
 		<?php get_sidebar( 'subsidiary' ); ?>
 		
 	</div><!-- #content -->

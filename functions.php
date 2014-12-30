@@ -4,10 +4,9 @@ require_once( get_stylesheet_directory() . '/gw-gravity-forms-map-fields-to-fiel
 
 // Add class to body on cpt pages
 
-// add category nicenames in body and post class
 function add_sidebar_class( $classes ) {
     global $post;
-    if (is_singular('cpt-speakers') || is_singular('cpt_topics' )) {
+    if (is_singular('cpt-speakers')) {
   // show adv. #1
         $classes[] = "sidebar-primary";
         return $classes;
@@ -97,20 +96,18 @@ function custom_js_script()
     wp_enqueue_script('magnific-script', get_stylesheet_directory_uri() . '/js/magnific.js', array( 'jquery'), false, false);
     wp_enqueue_script('jquery-ui-selectable');
     wp_enqueue_script('jquery-ui-tabs');
+    wp_enqueue_script('jquery-effects-blind');
     wp_enqueue_style('plugin_name-admin-ui-css',
         'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/themes/smoothness/jquery-ui.css',
         false,
         false,
         false
     );
-    /**
-    * Register and load font awesome CSS files using a CDN.
-    *
-    * @link http://www.bootstrapcdn.com/#fontawesome
-    * @author FAT Media
-    */
-    wp_enqueue_style( 'prefix-font-awesome', '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css', array(), '4.0.3' );
+    wp_enqueue_script( 'ajax-script', get_stylesheet_directory_uri() . '/js/ajax-implementation.js', array( 'jquery' ) );
+    // code to declare the URL to the file handling the AJAX request </p>
+    wp_localize_script( 'ajax-script', 'myAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 }
+
 add_action('wp_enqueue_scripts', 'custom_js_script');
 
 
@@ -180,7 +177,36 @@ function acf_post_submission ($entry, $form) {
     update_field('field_548a08ed42aea', $entry['5'], $post_id);
     update_field('field_548a099242aeb', $entry['7'], $post_id);
     update_field('field_548a09bc42aec', array($entry['8.1'], $entry['8.2'], $entry['8.3']), $post_id);
+    update_field('field_548a08d342ae9', $entry['10.1'], $post_id);
+    update_field('field_5491cd6c9d8d1', $entry['10.2'], $post_id);
+    update_field('field_5491cd9a9d8d2', $entry['10.3'], $post_id);
+    update_field('field_5491cdac9d8d3', $entry['10.4'], $post_id);
+    update_field('field_5491cdf99d8d4', $entry['10.5'], $post_id);
+    update_field('field_5491ce049d8d5', $entry['10.6'], $post_id);
 }
 
 /* Add custom image size */
 add_image_size( 'homepage-thumb', 64, 64, array('center','top') ); // (cropped)
+add_image_size( 'speakers-thumb', 128, 128, array('center','top') ); // (cropped)
+
+/* Ajax Functions */
+function MyAjaxFunction(){
+  //get the data from ajax() call
+   $GreetingAll = $_POST['GreetingAll'];
+   $results = "<h2>".$GreetingAll."</h2>";
+   die($results);
+}
+  // creating Ajax call for WordPress
+   add_action( 'wp_ajax_nopriv_MyAjaxFunction', 'MyAjaxFunction' );
+   add_action( 'wp_ajax_MyAjaxFunction', 'MyAjaxFunction' );
+
+/* Edit Query */
+function speakers_posts_per_page($query) {
+    if ( is_post_type_archive('cpt-speakers') && ! is_admin() ) {
+        // Display only 1 post for the original blog archive
+        $query->set( 'posts_per_page', 3 );
+        return;
+    }
+}
+add_action('pre_get_posts','speakers_posts_per_page');
+

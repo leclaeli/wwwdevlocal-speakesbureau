@@ -29,7 +29,7 @@ if (!isset($_COOKIE['TestCookie'])) {
 
 		</div><!-- #primary -->
 		
-		<?php get_sidebar( 'cpt_speakers' ); ?>	
+		<?php get_sidebar( 'cpt-speakers' ); ?>	
 		
 	</div><!-- #content -->
 

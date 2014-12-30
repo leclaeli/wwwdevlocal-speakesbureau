@@ -44,8 +44,8 @@ Version:        0.1
 .searchform-home h4 {
     font-weight: 300;
     color: #fff;
-    border-bottom: 4px solid #d06d34;
-    padding-bottom: 10px;
+    /*border-bottom: 4px solid #d06d34;
+    padding-bottom: 10px;*/
 }
 
 #search-container {
@@ -84,7 +84,9 @@ Version:        0.1
 }
 
 #home-browse li {
-  color: #d06d34;
+  color: #fff;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 #home-browse a {
@@ -229,6 +231,10 @@ Version:        0.1
 
 /* Speakers and Topics */
 
+.post-type-archive-cpt-speakers.sidebar-primary .site-content {
+  width: 100%;
+}
+
 .az-checkbox {
   background: #ddd;
 }
@@ -264,8 +270,9 @@ Version:        0.1
     border: 1px solid #222;
     width: 50%;
     float: left;
-    height: 310px;
+    height: 240px;
     padding: 10px;
+    margin: 30px 0 0;
 }
 
 #tabs article .entry-title,
@@ -279,7 +286,7 @@ Version:        0.1
 }
 
 #tabs article section {
-    padding-left: 130px;
+    padding-left: 140px;
 }
 
 .cpt-thumbnail {
@@ -318,6 +325,18 @@ Version:        0.1
 .ui-tabs .ui-tabs-panel {
   overflow: auto;
   padding: 0;
+}
+
+
+/* Forms */
+
+#gform_wrapper_1 .chosen-container-multi .chosen-choices {
+  background-image: none;
+  border: 2px solid #f2f2f2; 
+}
+
+#gform_wrapper_1 .chosen-container-multi .chosen-choices li.search-field input[type="text"] {
+  height: inherit;
 }
 
 
