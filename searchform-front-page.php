@@ -18,7 +18,7 @@
             </div>
         </div>
         <input name="submit" type="submit" id="submit" value="Go">
-        <ul id="home-browse">
+        <ul id="home-browse" class="sb-ul">
             <li><a href="speakers/#topics/">Browse Topics</a></li>
             <li><a href="topics/">Browse Presentations</a></li>
         </ul>

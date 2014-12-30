@@ -64,9 +64,6 @@ function display_topics($separator = "")
     $post_objects = get_field('acf_topics');
     $i=0;
     if($post_objects):
-
-        echo '<span class="topics-links"><i class="fa fa-folder-open-o"></i>
-Topics: ';
         foreach($post_objects as $post): // variable must be called $post (IMPORTANT)
             setup_postdata($post);
             $my_permalink = get_permalink();
@@ -137,6 +134,10 @@ function twentythirteen_entry_meta() {
     if ( $categories_list ) {
         //echo '<span class="categories-links">' . $categories_list . '</span>';
     }
+    // $terms_list = get_the_term_list($post->ID, 'topics', '<span>Topics:</span>', ', ' );
+    // if ( $terms_list ) {
+    //     echo '<span class="terms-links">' . $terms_list . '</span>';
+    // }    
 
     // Translators: used between list items, there is a space after the comma.
     $tag_list = get_the_tag_list( '', __( ', ', 'twentythirteen' ) );
@@ -203,9 +204,8 @@ function MyAjaxFunction(){
 /* Edit Query */
 function speakers_posts_per_page($query) {
     if ( is_post_type_archive('cpt-speakers') && ! is_admin() ) {
-        // Display only 1 post for the original blog archive
-        $query->set( 'posts_per_page', 3 );
-        return;
+       // Set query parameters
+        return; // return posts
     }
 }
 add_action('pre_get_posts','speakers_posts_per_page');

@@ -38,7 +38,6 @@ sortedAz = [];
     $('.az-checkbox [type="checkbox"]').prop('checked', false);
     
     $('.az-checkbox [type="checkbox"]').change(function(){
-
         //Act on the event */
         letter = $(this).siblings('label').text();
 
@@ -54,17 +53,30 @@ sortedAz = [];
     
         //iterate through array or object
         if ($('input:checkbox:checked').length > 0) {
+            if($("article").hasClass("az-filter")){
+                // remove not found message
+                $('#speaker-container > #not-found').remove();
+            } else {
+                $('#speaker-container').prepend("<p id='not-found'>Sorry, we didn't find any speakers that fit your search criteria.</p>")
+            }
+            if($(".cat-item").hasClass("az-filter")){
+                // remove not found message
+                $('#topics > #not-found').remove();
+            } else {
+                $('#topics').prepend("<p id='not-found'>Sorry, we didn't find any Topics that fit your search criteria.</p>")
+            }
             $('article, .cat-item').each(function() {
                 $('article, .cat-item').not('.az-filter').hide();
                 $('.az-filter').show();
                 console.log('checked');
             });
         } else {
+            $('#not-found').remove();
             $('article, .cat-item').each(function() {
                 $('article, .cat-item').show();
                 console.log('not checked');
             });
-        } 
+        }
     });
 
 

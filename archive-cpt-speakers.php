@@ -35,7 +35,12 @@ get_header(); ?>
                         _e( 'Find a Speaker', 'twentythirteen' );
                     endif;
                 ?></h1>
-                <?php get_template_part('searchform-cpt_speakers');?>
+                <div class="two_third">
+                    <?php get_template_part('searchform-cpt_speakers');?>
+                    <div class="az-filter">
+                        <h4>A-Z Filter</h4>
+                    </div> <!-- to be filled via jQuery -->
+                </div>
                 <div class="az-placeholder">
                 <?php /* A-Z listing */ 
                     $i = 0;
@@ -69,7 +74,14 @@ get_header(); ?>
                     endwhile; 
                 ?>
                 </div>
-                <div class="az-filter"></div> <!-- to be filled via jQuery -->
+                <div id="quick-links" class="one_third last_column searchform-home">
+                    <h4>Quick Links</h4>
+                    <ul class="sb-ul">
+                        <li><a href="">Request a Speaker</a></li>
+                        <li><a href="">Become a Speaker</a></li>
+                    </ul>
+                </div>
+                
             </header><!-- .page-header -->
 
             <div id="tabs">
@@ -92,17 +104,33 @@ get_header(); ?>
                             <div class="cpt-thumbnail">
                                 <a href="<?php echo get_permalink(); ?>"><?php the_post_thumbnail('speakers-thumb'); ?></a>
                             </div>
+                            <?php else: ?>
+                            <div class="cpt-thumbnail">
+                                <a href="<?php echo get_permalink(); ?>"><img src="<?php echo get_site_url() ?>/wp-content/uploads/sites/79/2014/11/profile-default-128x128.jpg" width="128" height="128" /></a>
+                            </div>
                             <?php endif; ?>
-                            <section class="entry-wrapper">
-                                <h1 class="entry-title">
+                            <div class="entry-wrapper">
+                                <h1 id="speaker-name" class="entry-title">
                                         <a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a>
                                 </h1>
+                                
+                                <?php if( get_field('job_title') || get_field('department') ): ?>
+                                    <p id="job-title"><?php echo get_field('job_title') . ', <span>' . get_field('department') . '</span>'; ?></p>
+                                <?php endif; ?>
                                     
-                                <div class="entry-meta">
-                                    <?php display_topics(", "); ?>
-                                    <?php echo get_the_term_list( $post->ID, 'topics', 'Topics: ', ', ' ); ?>
-                                    <?php twentythirteen_entry_meta(); ?>
-                                </div><!-- .entry-meta -->
+                                
+                                    <?php //display_topics(", "); ?>
+                                    <?php $term_list = get_the_term_list( $post->ID, 'topics', '', ', ' );
+                                    if ($term_list) {
+                                        echo '<div><h2 id="speaker-topics">Topics:</h2><p>' . $term_list . '</p></div>';
+                                    }
+                                    $tag_list = get_the_tag_list( '', __( ', ', 'twentythirteen' ) );
+                                    if ( $tag_list ) {
+                                        echo '<div><h2 id="speaker-keywords">Keywords:</h2><p>' . $tag_list . '</p></div>';
+                                    }
+                                    ?>
+                                    <?php //twentythirteen_entry_meta(); ?>
+                               
 
                                 <?php if ( is_search() || is_archive() )  : // Only display Excerpts for Search and Archives ?>
                                 <div class="entry-summary">
@@ -113,28 +141,11 @@ get_header(); ?>
                                     <?php the_content( __( 'Continue reading <span class="meta-nav">&rarr;</span>', 'twentythirteen' ) ); ?>    
                                     <?php wp_link_pages( array( 'before' => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentythirteen' ) . '</span>', 'after' => '</div>', 'link_before' => '<span>', 'link_after' => '</span>' ) ); ?>
                                 </div><!-- .entry-content -->
-                            </section><!-- .entry-wrapper -->
+                            </div><!-- .entry-wrapper -->
                         <?php endif; ?>
                         </article><!-- #post -->        
                         <?php endwhile; ?>
                     </div><!-- end #speaker-container -->
-                    <?php
-                        $count_posts = wp_count_posts('cpt-speakers');
-                        $count_spk_posts = ($count_posts->publish);
-                        //print_r($count_spk_posts);
-                        $max_pages = ceil($count_spk_posts/3);
-                    ?>
-                    <?php for ($i=2; $i < $max_pages+1 ; $i++) { ?> 
-                        <div id="speaker-container-<?php echo $i ?>"></div>
-                    <?php } ?>
-                    <div class="clear" style="clear:both;"></div>
-                    <p>
-                        <input type="hidden" name="loadMore" id="loadMore" value="loadMore" />
-                        <input type="submit" id="clickToLoad" value="Load More" />
-                    </p> 
-                     <ul id='PaginationExample'>
-                        <li><?php next_posts_link('Load More') ?></li>
-                    </ul>
                 </div><!-- #speakers -->
                 <?php //twentythirteen_paging_nav(); ?>
                 
@@ -150,12 +161,6 @@ get_header(); ?>
                     List of presentations 
                 </div>
             </div> <!-- #tabs -->
-<p>
-    <input type="hidden" name="GreetingAll" id="GreetingAll" value="Hello Everyone!" />
-    <input type="submit" id="PleasePushMe" />
-    <div id="test-div1"></div>
-</p>  
-
         </div><!-- #primary -->
         
     </div><!-- #content -->
