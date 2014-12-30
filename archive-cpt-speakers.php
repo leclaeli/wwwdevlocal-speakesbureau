@@ -123,17 +123,18 @@ get_header(); ?>
                         $count_spk_posts = ($count_posts->publish);
                         //print_r($count_spk_posts);
                         $max_pages = ceil($count_spk_posts/3);
-                        print_r($max_pages);
                     ?>
                     <?php for ($i=2; $i < $max_pages+1 ; $i++) { ?> 
                         <div id="speaker-container-<?php echo $i ?>"></div>
-                        <div class="clear" style="clear:both;">
-                            <ul id='PaginationExample'>
-                                <li><?php next_posts_link('Load More') ?></li>
-                                <li><?php previous_posts_link('Newer Entries &raquo;') ?></li>
-                            </ul>
-                        </div>
+                        <div class="clear" style="clear:both;"></div>
                     <?php } ?>
+                    <p>
+                        <input type="hidden" name="loadMore" id="loadMore" value="loadMore" />
+                        <input type="submit" id="clickToLoad" value="Load More" />
+                    </p> 
+                     <ul id='PaginationExample'>
+                        <li><?php next_posts_link('Load More') ?></li>
+                    </ul>
                 </div><!-- #speakers -->
                 <?php //twentythirteen_paging_nav(); ?>
                 

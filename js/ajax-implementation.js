@@ -17,16 +17,16 @@ jQuery(document).ready(function($) {
       }
     });
   });
-  jQuery('#PaginationExample a').live('click', function(e){
-    e.preventDefault();
-    var link = jQuery(this).attr('href');
+  $('#clickToLoad').on('click', function(e){
+    //e.preventDefault();
+    var link = $('#PaginationExample a').attr('href');
     var page = link.charAt(link.length-2);
-    console.log(page);
+    console.log(link + page);
     //jQuery('#tabs').html('Loading...');
     //jQuery('#speakers').load(link+' #speakers');
-    var placeHolder = jQuery('#speaker-container-2').load(link+' #speaker-container');
-    $('#PaginationExample a').load(link+' #PaginationExample a')
-    jQuery('#speaker-container-2').append(placeHolder);
+    var placeHolder = $('#speaker-container-' +page).load(link+' #speaker-container');
+    $('#PaginationExample li').load(link+' #PaginationExample a')
+    $('#speaker-container-' +page).append(placeHolder);
     // jQuery.ajax(myAjax.ajaxurl,{
     //   type: "post",
     //   data: {
