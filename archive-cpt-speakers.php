@@ -126,8 +126,8 @@ get_header(); ?>
                     ?>
                     <?php for ($i=2; $i < $max_pages+1 ; $i++) { ?> 
                         <div id="speaker-container-<?php echo $i ?>"></div>
-                        <div class="clear" style="clear:both;"></div>
                     <?php } ?>
+                    <div class="clear" style="clear:both;"></div>
                     <p>
                         <input type="hidden" name="loadMore" id="loadMore" value="loadMore" />
                         <input type="submit" id="clickToLoad" value="Load More" />

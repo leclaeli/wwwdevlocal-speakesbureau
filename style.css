@@ -327,6 +327,10 @@ Version:        0.1
   padding: 0;
 }
 
+#PaginationExample {
+  visibility: hidden;
+}
+
 
 /* Forms */
 

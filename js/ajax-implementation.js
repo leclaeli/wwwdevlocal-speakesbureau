@@ -24,7 +24,7 @@ jQuery(document).ready(function($) {
     console.log(link + page);
     //jQuery('#tabs').html('Loading...');
     //jQuery('#speakers').load(link+' #speakers');
-    var placeHolder = $('#speaker-container-' +page).load(link+' #speaker-container');
+    var placeHolder = $('#speaker-container-' +page).load(link+' #speaker-container article');
     $('#PaginationExample li').load(link+' #PaginationExample a')
     $('#speaker-container-' +page).append(placeHolder);
     // jQuery.ajax(myAjax.ajaxurl,{
