@@ -172,7 +172,7 @@ add_action("gform_after_submission_1", "acf_post_submission", 10, 2);
  
 function acf_post_submission ($entry, $form) {
     $post_id = $entry["post_id"];
-
+    // Speakers
     update_field('field_548a088742ae7', $entry['3'], $post_id);
     update_field('field_548a08c442ae8', $entry['4'], $post_id);
     update_field('field_548a08ed42aea', $entry['5'], $post_id);
@@ -184,6 +184,7 @@ function acf_post_submission ($entry, $form) {
     update_field('field_5491cdac9d8d3', $entry['10.4'], $post_id);
     update_field('field_5491cdf99d8d4', $entry['10.5'], $post_id);
     update_field('field_5491ce049d8d5', $entry['10.6'], $post_id);
+    // Presentations
 }
 
 /* Add custom image size */

@@ -10,11 +10,24 @@ function codex_custom_posts_init()
       'has_archive' => true,
       'supports' => array(
             'title', 'editor', 'author', 'thumbnail',
-            'excerpt','custom-fields', 'trackbacks', 'comments',
-            'revisions', 'page-attributes', 'post-formats'
+            'excerpt','custom-fields', 'revisions', 'page-attributes'
             )
     );
     register_post_type('cpt-speakers', $args_cpt_speakers);
+
+    $args_cpt_presentations = array(
+      'public' => true,
+      'label' => 'Presentations',
+      'rewrite' => array( 'slug' => 'speakers' ),
+      'menu_icon' => 'dashicons-format-aside',
+      'taxonomies' => array('post_tag', 'category', 'topics'),
+      'has_archive' => true,
+      'supports' => array(
+            'title', 'editor', 'author', 'thumbnail',
+            'excerpt','custom-fields', 'revisions', 'page-attributes'
+            )
+    );
+    register_post_type('cpt-presentations', $args_cpt_presentations);
 
     // Add new taxonomy, make it hierarchical (like categories)
     $labels = array(
@@ -41,7 +54,7 @@ function codex_custom_posts_init()
       'rewrite'           => array( 'slug' => 'topics' ),
       );
 
-    register_taxonomy( 'topics', 'cpt-speakers', $tax_args );
+    register_taxonomy( 'topics', array( 'cpt-presentations', 'cpt-speakers' ), $tax_args );
 }
 
 add_action( 'init', 'codex_custom_posts_init' );
