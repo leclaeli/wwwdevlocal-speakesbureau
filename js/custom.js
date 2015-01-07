@@ -44,11 +44,9 @@ sortedAz = [];
         if ($(this).prop('checked')) {
             $('[data-bookmark='+letter+']').addClass("az-filter");
             $(this).siblings('label').addClass('checked');
-            console.log(letter);
         } else {
             $('[data-bookmark='+letter+']').removeClass("az-filter");
             $(this).siblings('label').removeClass('checked');
-            console.log(letter);
         }
     
         //iterate through array or object
@@ -68,13 +66,11 @@ sortedAz = [];
             $('article, .cat-item').each(function() {
                 $('article, .cat-item').not('.az-filter').hide();
                 $('.az-filter').show();
-                console.log('checked');
             });
         } else {
             $('#not-found').remove();
             $('article, .cat-item').each(function() {
                 $('article, .cat-item').show();
-                console.log('not checked');
             });
         }
     });
@@ -86,14 +82,23 @@ sortedAz = [];
         var singleValues = $(this).val();
         $('article').removeClass('found').show();
         if($("article").hasClass("az-filter")){
-            $(".az-filter .entry-wrapper:contains('" + singleValues + "')" ).parents('article').addClass("found");
+            $(".az-filter .entry-wrapper:contains('" + singleValues + "')" ).parents('article').addClass("found"); 
         } else {
             $(".entry-wrapper:contains('" + singleValues + "')" ).parents('article').addClass("found");
         }
-        
+        $('.cat-item').removeClass('found').show();
+        if($(".cat-item").hasClass("az-filter")){
+            console.log('has class az filter');
+            $(".az-filter:contains('" + singleValues + "')" ).addClass("found");
+        } else {
+            $(".cat-item:contains('" + singleValues + "')" ).addClass("found");
+        }
         $('article').not(".found").hide();
+        $('.cat-item').not(".found").hide();
         //$("#ptag").html( "<b>Single:</b> " + singleValues);
     });
+
+
 
     /* jQuery Ui Tabs */
 
@@ -113,8 +118,8 @@ sortedAz = [];
     $( "#home-search" ).blur(function() {
         $('.search-dropdown-container').hide();
     });
-    $( "#home-search" ).keyup(function() {
-        var singleValues = $(this).val();
+    function searchSpeakers() {
+        var singleValues = $('#home-search').val();
         $('.search-dropdown-container li').removeClass('found').show();
         if( $('#home-search').val() ) {
             console.log(singleValues);
@@ -127,9 +132,9 @@ sortedAz = [];
         } else {
             $('.search-dropdown-container').hide();
         }
-    });
-
+    }
+    $( "#home-search" ).keyup(searchSpeakers).focus(searchSpeakers);
     /* Move Tag Cloud */
-    $( ".tag-cloud p" ).replaceWith( $( "#tag-cloud" ) );
+    $( ".tag-cloud p" ).replaceWith( $( "#tag-cloud" ));
 });
 

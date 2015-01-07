@@ -31,7 +31,24 @@ get_header(); ?>
 							<div class="searchform-home content-column one_third last_column">
 								<h4>Quick Search</h4>
 								<?php get_template_part('searchform-front-page');?>
+								 <ul id="home-browse" class="sb-ul">
+								    <li><a href="speakers/#topics/">Browse Topics</a></li>
+								    <li><a href="topics/">Browse Presentations</a></li>
+								</ul>
+								<div class="search-dropdown-container">
+								    <?php $speaker_posts = get_posts('post_type=cpt-speakers&numberposts=-1' ); ?>
+								    <ul>
+								        <?php
+								        foreach ( $speaker_posts as $post ) : setup_postdata( $post ); ?>
+								            <li>
+								                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+								            </li>
+								        <?php endforeach; 
+								    wp_reset_postdata();?>
+								    </ul>
+								</div>
 							</div>
+							<div class="clear_column"></div>
 						</div>
 						<div class="clear_column"></div>
 						<?php wp_reset_query(); the_content(); ?>

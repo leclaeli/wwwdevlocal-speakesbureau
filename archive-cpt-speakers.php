@@ -90,6 +90,7 @@ get_header(); ?>
                     <li><a href="#topics">Topics</a></li>
                     <li><a href="#presentations">Presentations</a></li>
                 </ul>
+                <div id="count-bar">Results</div>
                 <div id="speakers">
                     <div id="speaker-container">
                         <?php /* The loop */ ?>
@@ -155,7 +156,9 @@ get_header(); ?>
                 <?php endif; ?>
                 
                 <div id="topics">
-                    <?php wp_list_categories('orderby=name&taxonomy=topics'); ?>
+                    <ul>
+                        <?php wp_list_categories('orderby=name&taxonomy=topics&title_li='); ?>
+                    </ul>
                 </div>
                 <div id="presentations">
                     List of presentations 
