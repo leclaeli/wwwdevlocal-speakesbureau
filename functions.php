@@ -172,7 +172,7 @@ add_action("gform_after_submission_1", "acf_post_submission", 10, 2);
  
 function acf_post_submission ($entry, $form) {
     $post_id = $entry["post_id"];
-    // Speakers
+
     update_field('field_548a088742ae7', $entry['3'], $post_id);
     update_field('field_548a08c442ae8', $entry['4'], $post_id);
     update_field('field_548a08ed42aea', $entry['5'], $post_id);
@@ -182,9 +182,69 @@ function acf_post_submission ($entry, $form) {
     update_field('field_5491cd6c9d8d1', $entry['10.2'], $post_id);
     update_field('field_5491cd9a9d8d2', $entry['10.3'], $post_id);
     update_field('field_5491cdac9d8d3', $entry['10.4'], $post_id);
-    update_field('field_5491cdf99d8d4', $entry['10.5'], $post_id);
-    update_field('field_5491ce049d8d5', $entry['10.6'], $post_id);
-    // Presentations
+    update_field('field_5491cdf99d8d4', $entry['10.6'], $post_id);
+    update_field('field_5491ce049d8d5', $entry['10.5'], $post_id);
+    $cat_ids = explode(",", $entry['19']);
+    $cat_ids = array_map( 'intval', $cat_ids );
+    $cat_ids = array_unique( $cat_ids );
+    $term_taxonomy_ids = wp_set_object_terms( $entry['post_id'], $cat_ids, 'topics' );
+    if ( is_wp_error( $term_taxonomy_ids ) ) {
+    // There was an error somewhere and the terms couldn't be set.
+    } else {
+        // Success! The post's categories were set.
+    }
+}
+
+/* Update ACF Fields with Gravity Form input */
+add_action("gform_after_submission_3", "acf_presentation_submission", 10, 2);
+ 
+function acf_presentation_submission( $entry, $form ) {
+    $post_id = $entry["post_id"];
+    //print_r($entry);
+    //print_r($entry['7']);
+    update_field('field_54adab60b4b39', $entry['12'], $post_id); // Your Name
+    update_field('field_54adac3eb4b3b', $entry['15'], $post_id); // Audiovisual Needs
+    update_field('field_54ae9020b4b3c', $entry['8'], $post_id); // Audiovisual Info
+    //update_field('field_54ae90e29986f', $entry['10'], $post_id); // Other org_ids
+    
+    // Topics
+    $cat_ids = explode( ",", $entry['11'] );
+    $cat_ids = array_map( 'intval', $cat_ids );
+    $cat_ids = array_unique( $cat_ids );
+    $term_taxonomy_ids = wp_set_object_terms( $entry['post_id'], $cat_ids, 'topics' );
+    if ( is_wp_error( $term_taxonomy_ids ) ) {
+    // There was an error somewhere and the terms couldn't be set.
+    } else {
+        // Success! The post's categories were set.
+    }
+    // Organizations
+    $org_ids = explode( ",", $entry['9'] );
+    $org_ids = array_map( 'intval', $org_ids );
+    $org_ids = array_unique( $org_ids );
+    $term_taxonomy_ids = wp_set_object_terms( $entry['post_id'], $org_ids, 'organizations' );
+    if ( is_wp_error( $term_taxonomy_ids ) ) {
+    // There was an error somewhere and the terms couldn't be set.
+    } else {
+        // Success! The post's orgegories were set.
+    }
+
+    // Other Organizations (Repeater Field)
+    $field_key = "field_54ae90e29986f";
+    // $value[] = array("organization" => "Foo1", "acf_fc_layout" => "layout_1_name");
+    // $value[] = array("organization" => "Foo2", "acf_fc_layout" => "layout_2_name");
+    // $value[] = array("organization" => "Foo3", "acf_fc_layout" => "layout_3_name");
+    $other_orgs = unserialize($entry['10']);
+    print_r($other_orgs);
+    
+
+    
+    $count = 1;
+    foreach ($other_orgs as $other_org => $org_value) {
+        $value[] = array("organization" => $org_value, "acf_fc_layout" => "row_".$count);
+        $count++;
+    }
+    echo '<pre>'; print_r($value); echo '</pre>';
+    update_field( $field_key, $value, $post_id );
 }
 
 /* Add custom image size */
@@ -230,5 +290,3 @@ function set_chosen_options($form){
     //return the form object from the php hook  
     return $form;
 }
-
-
