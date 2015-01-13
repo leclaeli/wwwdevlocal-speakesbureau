@@ -161,7 +161,19 @@ get_header(); ?>
                     </ul>
                 </div>
                 <div id="presentations">
-                    List of presentations 
+                    List of presentations:
+
+                    <ul>
+                    <?php
+                        $pres_args = array( 'numberposts' => -1, 'post_type' => 'cpt-presentations' );
+                        $myposts = get_posts( $pres_args );
+                        foreach ( $myposts as $post ) : setup_postdata( $post ); ?>
+                            <li>
+                                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                            </li>
+                        <?php endforeach; 
+                        wp_reset_postdata();?>
+                    </ul>
                 </div>
             </div> <!-- #tabs -->
         </div><!-- #primary -->

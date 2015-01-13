@@ -114,6 +114,20 @@ sortedAz = [];
         active: false
     });
 
+    $( "#tabs-collapse-2" ).tabs({
+        show: { effect: "blind", duration: 800 },
+        hide: { effect: "blind", duration: 800 },
+        collapsible: true,
+        active: false
+    });
+
+    // Link to jQuery Tabs
+
+    if($("#tabs") && document.location.hash) {
+        console.log('hash');
+        //$.scrollTo("#tabs");
+    }
+
     /* Front Page Search Filter */
     $( "#home-search" ).blur(function() {
         $('.search-dropdown-container').hide();

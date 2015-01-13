@@ -158,7 +158,7 @@ add_filter( 'pre_get_posts' , 'my_change_order' );
 // Function accepting current query
 function my_change_order( $query ) {
     // Check if the query is for an archive
-    if($query->is_archive && !is_admin() && is_post_type_archive('cpt-speakers'))
+    if($query->is_archive && $query->is_main_query() && !is_admin() && is_post_type_archive('cpt-speakers'))
         // Query was for archive, then set order
         $query->set( 'meta_key', 'last_name' );
         $query->set( 'orderby', 'meta_value' );
@@ -184,6 +184,8 @@ function acf_post_submission ($entry, $form) {
     update_field('field_5491cdac9d8d3', $entry['10.4'], $post_id);
     update_field('field_5491cdf99d8d4', $entry['10.6'], $post_id);
     update_field('field_5491ce049d8d5', $entry['10.5'], $post_id);
+    update_field('field_54a2e8dbe2bef', $entry['18'], $post_id); // Job Title (text)
+    update_field('field_54b3f6db4e584', $entry['20'], $post_id); // Willing to speak to media (radio)
     $cat_ids = explode(",", $entry['19']);
     $cat_ids = array_map( 'intval', $cat_ids );
     $cat_ids = array_unique( $cat_ids );
@@ -200,12 +202,9 @@ add_action("gform_after_submission_3", "acf_presentation_submission", 10, 2);
  
 function acf_presentation_submission( $entry, $form ) {
     $post_id = $entry["post_id"];
-    //print_r($entry);
-    //print_r($entry['7']);
     update_field('field_54adab60b4b39', $entry['12'], $post_id); // Your Name
     update_field('field_54adac3eb4b3b', $entry['15'], $post_id); // Audiovisual Needs
-    update_field('field_54ae9020b4b3c', $entry['8'], $post_id); // Audiovisual Info
-    //update_field('field_54ae90e29986f', $entry['10'], $post_id); // Other org_ids
+    update_field('field_54ae9020b4b3c', $entry['8'], $post_id); // Audiovisual Info (radio)
     
     // Topics
     $cat_ids = explode( ",", $entry['11'] );
@@ -217,6 +216,7 @@ function acf_presentation_submission( $entry, $form ) {
     } else {
         // Success! The post's categories were set.
     }
+
     // Organizations
     $org_ids = explode( ",", $entry['9'] );
     $org_ids = array_map( 'intval', $org_ids );
@@ -229,22 +229,14 @@ function acf_presentation_submission( $entry, $form ) {
     }
 
     // Other Organizations (Repeater Field)
-    $field_key = "field_54ae90e29986f";
-    // $value[] = array("organization" => "Foo1", "acf_fc_layout" => "layout_1_name");
-    // $value[] = array("organization" => "Foo2", "acf_fc_layout" => "layout_2_name");
-    // $value[] = array("organization" => "Foo3", "acf_fc_layout" => "layout_3_name");
     $other_orgs = unserialize($entry['10']);
-    print_r($other_orgs);
-    
-
-    
     $count = 1;
     foreach ($other_orgs as $other_org => $org_value) {
         $value[] = array("organization" => $org_value, "acf_fc_layout" => "row_".$count);
         $count++;
     }
-    echo '<pre>'; print_r($value); echo '</pre>';
-    update_field( $field_key, $value, $post_id );
+    update_field( 'field_54ae90e29986f', $value, $post_id );
+    //echo '<pre>'; print_r($value); echo '</pre>';
 }
 
 /* Add custom image size */
@@ -263,13 +255,13 @@ function MyAjaxFunction(){
    add_action( 'wp_ajax_MyAjaxFunction', 'MyAjaxFunction' );
 
 /* Edit Query */
-function speakers_posts_per_page($query) {
-    if ( is_post_type_archive('cpt-speakers') && ! is_admin() ) {
-       // Set query parameters
-        return; // return posts
-    }
-}
-add_action('pre_get_posts','speakers_posts_per_page');
+// function speakers_posts_per_page($query) {
+//     if ( is_post_type_archive('cpt-speakers') && ! is_admin() ) {
+//        // Set query parameters
+//         return; // return posts
+//     }
+// }
+// add_action('pre_get_posts','speakers_posts_per_page');
 
 add_action("gform_pre_render", "set_chosen_options"); 
 function set_chosen_options($form){
@@ -289,4 +281,68 @@ function set_chosen_options($form){
 <?php
     //return the form object from the php hook  
     return $form;
+}
+
+
+/**
+ * Adds a box to the main column on the Post and Page edit screens.
+ */
+function myplugin_add_meta_box() {
+
+    $screens = array( 'cpt-speakers' );
+
+    foreach ( $screens as $screen ) {
+
+        add_meta_box(
+            'myplugin_sectionid',
+            __( 'Presentations', 'myplugin_textdomain' ),
+            'myplugin_meta_box_callback',
+            $screen
+        );
+    }
+}
+add_action( 'add_meta_boxes', 'myplugin_add_meta_box' );
+
+
+
+/**
+ * Prints the box content.
+ * 
+ * @param WP_Post $post The object for the current post/page.
+ */
+function myplugin_meta_box_callback( $post ) {
+
+    // args
+    $current_id = $post->ID;    
+    $args = array(
+        'numberposts' => -1,
+        'post_type' => 'cpt-presentations',
+        'meta_query' => array(
+            'relation' => 'OR',
+            array(
+                'key' => 'speaker_name',
+                'value' => $current_id,
+                'compare' => 'LIKE'
+            )
+        )
+    );
+
+    // get results
+    $the_query = new WP_Query( $args );
+
+    // The Loop
+    ?>
+    <?php if( $the_query->have_posts() ): ?>
+        <ul>
+        <?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
+            <li>
+                <?php the_title(); ?>
+                <a href="<?php the_permalink(); ?>">View</a>
+                <?php edit_post_link(' Edit', '<span>', '</span>'); ?>
+            </li>
+        <?php endwhile; ?>
+        </ul>
+    <?php endif; ?>
+
+    <?php wp_reset_query();  // Restore global post data stomped by the_post().    
 }

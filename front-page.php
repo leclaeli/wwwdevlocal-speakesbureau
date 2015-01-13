@@ -32,8 +32,8 @@ get_header(); ?>
 								<h4>Quick Search</h4>
 								<?php get_template_part('searchform-front-page');?>
 								 <ul id="home-browse" class="sb-ul">
-								    <li><a href="speakers/#topics/">Browse Topics</a></li>
-								    <li><a href="topics/">Browse Presentations</a></li>
+								    <li><a href="speakers/#topics">Browse Topics</a></li>
+								    <li><a href="speakers/#presentations">Browse Presentations</a></li>
 								</ul>
 								<div class="search-dropdown-container">
 								    <?php $speaker_posts = get_posts('post_type=cpt-speakers&numberposts=-1' ); ?>

@@ -474,7 +474,7 @@ Version:        0.1
 
 .ui-tabs .ui-tabs-nav li {
 	border: none;
-	background: #4e84b2;
+	background: #495058;
 	border-radius: 0;
 }
 
@@ -486,15 +486,84 @@ Version:        0.1
 }
 
 .ui-tabs .ui-tabs-nav li a:hover {
-	background-color: #495058;
+	background-color: #4e84b2;
 }
 
 .ui-tabs .ui-tabs-nav .ui-tabs-active {
-	background: #495058;
+	background: #4e84b2;
 }
 
 .ui-tabs .ui-tabs-nav .ui-tabs-active > a {
 	color: #fff;
+}
+
+/* Home Page Questions Tabs */
+
+.home .full_width.collapse-info {
+    margin-bottom: 20px;
+}
+
+.home .ui-tabs {
+    padding: 0;
+    margin: 0 1%;
+}
+
+.home .ui-tabs .ui-tabs-nav {
+    background: transparent;
+    padding: 0;
+    border: none;
+}
+
+.home .ui-tabs .ui-tabs-nav li {
+    width: 48%;
+    white-space: normal;
+    margin: 1%;
+    display: table;
+    position: relative;
+    background: transparent;
+}
+
+.home .ui-tabs .ui-tabs-nav .ui-tabs-active a {
+    background: #474d52;
+    color: #fff;
+}
+
+.home .ui-tabs .ui-tabs-nav li a {
+    background: none repeat scroll 0 0 #ececec;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: table-cell;
+    float: none;
+    font-size: 16px;
+    font-weight: 400;
+    height: 100px;
+    color: #000;
+    margin: 0;
+    padding: 20px 20px 20px 80px;
+    vertical-align: middle;
+    width: 100%;
+}
+
+.home .ui-tabs .ui-tabs-nav li a:before {
+    color: #d06d34;
+    content: "";
+    font: 40px/1 FontAwesome;
+    left: 28px;
+    top: 32px;
+    position: absolute;
+}
+
+.home .ui-tabs .ui-tabs-nav .ui-tabs-active a:before {
+    content: "\f139";
+    color: #ffbd00;
+}
+
+.ui-tabs .ui-tabs-panel {
+    box-shadow: none;
+}
+
+.ui-tabs-panel p {
+    padding: 0 20px;
 }
 
 #PaginationExample {

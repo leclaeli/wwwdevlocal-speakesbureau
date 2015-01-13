@@ -18,9 +18,9 @@ function codex_custom_posts_init()
     $args_cpt_presentations = array(
       'public' => true,
       'label' => 'Presentations',
-      'rewrite' => array( 'slug' => 'speakers' ),
+      'rewrite' => array( 'slug' => 'presentations' ),
       'menu_icon' => 'dashicons-format-aside',
-      'taxonomies' => array('post_tag', 'category', 'Organizations', 'organizations'),
+      'taxonomies' => array('post_tag', 'category', 'topics', 'organizations'),
       'has_archive' => true,
       'supports' => array(
             'title', 'editor', 'author', 'thumbnail',
@@ -31,7 +31,7 @@ function codex_custom_posts_init()
 
     // Add new taxonomy, make it hierarchical (like categories)
     $labels = array(
-      'name'              => _x( 'Topics', 'taxonomy general name' ),
+      'name'              => _x( 'topics', 'taxonomy general name' ),
       'singular_name'     => _x( 'Topic', 'taxonomy singular name' ),
       'search_items'      => __( 'Search Topics' ),
       'all_items'         => __( 'All Topics' ),
@@ -51,7 +51,7 @@ function codex_custom_posts_init()
       'show_ui'           => true,
       'show_admin_column' => true,
       'query_var'         => true,
-      'rewrite'           => array( 'slug' => 'Topics' ),
+      'rewrite'           => array( 'slug' => 'topics' ),
       );
 
     register_taxonomy( 'topics', array( 'cpt-presentations', 'cpt-speakers' ), $tax_args );
