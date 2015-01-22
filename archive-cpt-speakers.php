@@ -43,35 +43,35 @@ get_header(); ?>
                 </div>
                 <div class="az-placeholder">
                 <?php /* A-Z listing */ 
-                    $i = 0;
-                    $first_char_ln = array();
-                    //$first_char_lnt = array();
-                    while (have_posts()) : the_post(); {
+                    // $i = 0; //counter
+                    // $first_char_ln = array(); // first character of last name
 
-                    $meta_values = get_post_meta( $post->ID, 'last_name' );
+                    // while (have_posts()) : the_post(); {
 
-                    foreach ($meta_values as $meta_value => $last_name) {
-                        # code...
-                        $first_char = substr($last_name, 0, 1);
-                        $first_char_ln[]=strtoupper($first_char);
-                        $first_char_lc = strtolower($first_char_ln[$i]);
-                    if ($i==0) {
-                        echo "<span class='az-checkbox'><input type='checkbox' name='$first_char_lc' id='$first_char_lc'><label for='$first_char_lc'>$first_char_ln[$i]</label></span>";
-                        $w = 0; }
-                        else {
-                        $w = 1;
-                    }
-                    if ($first_char_ln[$i] != $first_char_ln[$i-$w]) {
+                    //     $meta_values = get_post_meta( $post->ID, 'last_name' );
 
-                    if ($i>0) {
-                        echo "";
-                    } 
-                        echo "<span class='az-checkbox'><input type='checkbox' name='$first_char_lc' id='$first_char_lc'><label for='$first_char_lc'>$first_char_ln[$i]</label></span>";
-                    } 
-                       $i++;    
-                    }
-                    }
-                    endwhile; 
+                    //     foreach ($meta_values as $meta_value => $last_name) {
+                    //         # code...
+                    //         $first_char = substr($last_name, 0, 1);
+                    //         $first_char_ln[]=strtoupper($first_char);
+                    //         $first_char_lc = strtolower($first_char_ln[$i]);
+                    //     if ($i==0) {
+                    //         echo "<span class='az-checkbox'><input type='checkbox' name='$first_char_lc' id='$first_char_lc'><label for='$first_char_lc'>$first_char_ln[$i]</label></span>";
+                    //         $w = 0; }
+                    //         else {
+                    //         $w = 1;
+                    //     }
+                    //     if ($first_char_ln[$i] != $first_char_ln[$i-$w]) {
+
+                    //     if ($i>0) {
+                    //         echo "";
+                    //     } 
+                    //         echo "<span class='az-checkbox'><input type='checkbox' name='$first_char_lc' id='$first_char_lc'><label for='$first_char_lc'>$first_char_ln[$i]</label></span>";
+                    //     } 
+                    //        $i++;    
+                    //     }
+                    //     }
+                    // endwhile; 
                 ?>
                 </div>
                 <div id="quick-links" class="one_third last_column searchform-home">
@@ -90,7 +90,7 @@ get_header(); ?>
                     <li><a href="#topics">Topics</a></li>
                     <li><a href="#presentations">Presentations</a></li>
                 </ul>
-                <div id="count-bar">Results</div>
+                <div id="count-bar"></div>
                 <div id="speakers">
                     <div id="speaker-container">
                         <?php /* The loop */ ?>
@@ -159,6 +159,18 @@ get_header(); ?>
                     <ul>
                         <?php wp_list_categories('orderby=name&taxonomy=topics&title_li='); ?>
                     </ul>
+                    <ul>
+                    <?php
+                    $important = array( 'numberposts' => 5, 'post_type' => 'cpt-speakers', 'category' => 9 );
+                    
+                    $myposts = get_posts( $important );
+                    foreach ( $myposts as $post ) : setup_postdata( $post ); ?>
+                        <li>
+                            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                        </li>
+                    <?php endforeach; 
+                    wp_reset_postdata();?>
+                    </ul>
                 </div>
                 <div id="presentations">
                     List of presentations:
@@ -168,7 +180,7 @@ get_header(); ?>
                         $pres_args = array( 'numberposts' => -1, 'post_type' => 'cpt-presentations' );
                         $myposts = get_posts( $pres_args );
                         foreach ( $myposts as $post ) : setup_postdata( $post ); ?>
-                            <li>
+                            <li class="pres-item">
                                 <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                             </li>
                         <?php endforeach; 

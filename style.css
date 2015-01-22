@@ -287,8 +287,6 @@ Version:        0.1
 	width: 100%;
 }
 
-#speaker-search {
-}
 
 #custom-search {
 	margin: 0;
@@ -347,13 +345,9 @@ Version:        0.1
 	font-size: 14px;
 	font-weight: 300;
 	padding: 10px 18px;
+    margin-bottom: 4px;
 }
 
-.ui-tabs .ui-tabs-panel {
-	overflow: auto;
-	padding: 20px 0px;
-	box-shadow: 0 25px 20px -20px rgba(0, 0, 0, 0.5) inset;
-}
 
 #tabs article {
 	overflow: auto;
@@ -434,22 +428,10 @@ Version:        0.1
 	margin-right: 0;
 }
 
-/*.cpt-inline-block {
-	display: inline-block;
-}*/
-
 .cpt-float-left {
 	float: left;
 }
 
-/** How do I get these font icons to work?
-
-.font-test li:before {
-	content: '\f055';
-	font: normal 12px/1 FontAwesome;
-	display: inline-block;
-	float: left;
-} */
 
 #tabs .ui-tabs,
 .ui-widget {
@@ -497,6 +479,20 @@ Version:        0.1
 	color: #fff;
 }
 
+.ui-tabs .ui-tabs-panel {
+    overflow: auto;
+    /*box-shadow: 0 25px 20px -20px rgba(0, 0, 0, 0.5) inset; */
+    padding: 0;
+}
+
+/* Topics */
+#topics ul {
+    width: 48%;
+    margin: 1%;
+    float: left;
+}
+
+
 /* Home Page Questions Tabs */
 
 .home .full_width.collapse-info {
@@ -505,22 +501,29 @@ Version:        0.1
 
 .home .ui-tabs {
     padding: 0;
-    margin: 0 1%;
+    margin: 0 1% 20px;
 }
 
 .home .ui-tabs .ui-tabs-nav {
     background: transparent;
     padding: 0;
     border: none;
+    overflow: auto;
+    margin: 0;
 }
 
 .home .ui-tabs .ui-tabs-nav li {
-    width: 48%;
+    width: 49%;
     white-space: normal;
-    margin: 1%;
     display: table;
     position: relative;
     background: transparent;
+    float: left;
+    margin: 0 0 1px;
+}
+
+.home .ui-tabs .ui-tabs-nav li:first-of-type {
+    margin-right: 2%;
 }
 
 .home .ui-tabs .ui-tabs-nav .ui-tabs-active a {
@@ -555,20 +558,38 @@ Version:        0.1
 
 .home .ui-tabs .ui-tabs-nav .ui-tabs-active a:before {
     content: "\f139";
-    color: #ffbd00;
+    color: #ffbd00; /* uwm gold */
 }
 
-.ui-tabs .ui-tabs-panel {
+.home .ui-tabs .ui-tabs-panel {
     box-shadow: none;
+    background: #474d52;
+    color: #fff;
+    padding: 0;
+    margin-top: 10px;
 }
 
-.ui-tabs-panel p {
-    padding: 0 20px;
+.home .ui-tabs-panel p {
+    border-left: 4px solid  #ffbd00;
+    margin: 20px;
+    padding: 10px 20px;
+}
+
+.home .ui-tabs-panel ul {
+    border-left: 4px solid  #ffbd00;
+    margin: 20px;
+    padding: 10px 20px;
+}
+
+.home .ui-tabs-panel ul li {
+    padding: 10px;
+    margin-left: 20px;
 }
 
 #PaginationExample {
-	visibility: hidden;
+    visibility: hidden;
 }
+
 
 
 /* Forms */
