@@ -346,3 +346,17 @@ function myplugin_meta_box_callback( $post ) {
 
     <?php wp_reset_query();  // Restore global post data stomped by the_post().    
 }
+
+function get_http() {
+    $url = 'http://wwwdevlocal.uwm.edu/summer-courses/plugins/';
+
+    $request = new WP_Http;
+    $result = $request->request($url);
+    $content = array();
+    var_dump($result);
+    if (isset($result->errors)) {
+        // display error message of some sort
+    } else {
+        $content = $result['body'];
+    }
+}

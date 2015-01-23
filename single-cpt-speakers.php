@@ -21,6 +21,8 @@ if (!isset($_COOKIE['TestCookie'])) {
 }
 
 				  ?>
+
+				<?php get_http(); ?>
 				<?php get_template_part( 'content', 'cpt' ); ?>
 				<?php twentythirteen_post_nav(); ?>
 				<?php comments_template(); ?>

@@ -7,7 +7,16 @@ jQuery(document).ready(function ($) {
     });
 
     /* jQuery Ui Tabs */
-    $( "#tabs" ).tabs();
+    $("#tabs").tabs();
+    $(function() {
+        $("#tabs").tabs({
+            activate: function(event, ui) {
+                var scrollTop = $(window).scrollTop();
+                window.location.hash = ui.newPanel.attr('id');
+                $(window).scrollTop(scrollTop);
+            }
+        });
+    });
  
     var tabTitle;
     function getTabTitle() {
@@ -216,6 +225,5 @@ jQuery(document).ready(function ($) {
         numberResults(tabTitle);
     }
     init();
-
 });
 
