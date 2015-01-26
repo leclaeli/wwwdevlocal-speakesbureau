@@ -6,7 +6,9 @@ jQuery(document).ready(function ($) {
         };
     });
 
-    /* jQuery Ui Tabs */
+
+/* jQuery UI Tabs */
+
     $("#tabs").tabs();
     $(function() {
         $("#tabs").tabs({
@@ -18,7 +20,8 @@ jQuery(document).ready(function ($) {
         });
     });
  
-    var tabTitle;
+    // Get the title and selector for active tab
+    var tabTitle; 
     function getTabTitle() {
         var active = $( "#tabs" ).tabs( "option", "active" );
             switch (active) {
@@ -36,7 +39,7 @@ jQuery(document).ready(function ($) {
         
     }
 
-    /* Get the current tab when clicked */
+    // Get the current tab when clicked
     $('.ui-tabs-nav').on('click', 'li', function(event) {
         $('.az-checkbox [type="checkbox"]').prop('checked', false);
 
@@ -46,11 +49,26 @@ jQuery(document).ready(function ($) {
         $('#not-found').remove();
     });
 
-    /* Count Bar - Speakers page */
+    // Count Bar - Speakers page
     function numberResults(currentSelector) {
         var displayed = $(currentSelector).filter(":visible").length;
         $('#count-bar').text('Number of Results: '+displayed);
     }
+
+    // Collapse tabs on home page */
+    $( "#tabs-collapse" ).tabs({
+        show: { effect: "blind", duration: 800 },
+        hide: { effect: "blind", duration: 800 },
+        collapsible: true,
+        active: false
+    });
+
+    $( "#tabs-collapse-2" ).tabs({
+        show: { effect: "blind", duration: 800 },
+        hide: { effect: "blind", duration: 800 },
+        collapsible: true,
+        active: false
+    });
 
 
 
@@ -63,14 +81,9 @@ jQuery(document).ready(function ($) {
         var topic = $( this ).text();
         var firstLetter = topic.charAt(0);
         $(this).attr("data-bookmark", firstLetter);
-        // catLetters[index] = firstLetter;
-        // if ($.inArray(firstLetter, aZ) < 0) {
-        //     aZ.push(firstLetter);
-        // }
-        // sortedAz = aZ.sort();
     });
 
-      // Add data-bookmark="" to .pres-item
+    // Add data-bookmark="" to .pres-item
     $('.pres-item a').each(function( index ) {
         var presentation = $( this ).text();
         var firstLetter = presentation.charAt(0);
@@ -78,6 +91,7 @@ jQuery(document).ready(function ($) {
         $(this).parent().attr("data-bookmark", firstLetter);
     });
 
+    // Create the A-Z Filter Checkboxes
     function createAz(dataBookmark) {
         sortedAz = [];
         $('.az-filter span').remove();
@@ -95,8 +109,6 @@ jQuery(document).ready(function ($) {
         });
     }
     
-    
-    
     $('.az-placeholder').remove();
     $('.az-checkbox [type="checkbox"]').prop('checked', false);
     $('.two_third').on('change', '.az-checkbox [type="checkbox"]', function(event) {
@@ -111,24 +123,6 @@ jQuery(document).ready(function ($) {
         }
     
         if ($('input:checkbox:checked').length > 0) {
-            // if($("article").hasClass("az-filter")){
-            //     // remove not found message
-            //     $('#speaker-container > #not-found').remove();
-            // } else {
-            //     $('#speaker-container').prepend("<p id='not-found'>Sorry, we didn't find any speakers that fit your search criteria.</p>")
-            // }
-            // if($(".cat-item").hasClass("az-filter")){
-            //     // remove not found message
-            //     $('#topics > #not-found').remove();
-            // } else {
-            //     $('#topics').prepend("<p id='not-found'>Sorry, we didn't find any Topics that fit your search criteria.</p>")
-            // }
-            // if($(".pres-item").hasClass("az-filter")){
-            //     // remove not found message
-            //     $('#presentations > #not-found').remove();
-            // } else {
-            //     $('#presentations').prepend("<p id='not-found'>Sorry, we didn't find any Topics that fit your search criteria.</p>")
-            // }
             $('article, .cat-item, .pres-item').each(function() {
                 $('article, .cat-item, .pres-item').not('.az-filter').hide();
                 $('.az-filter').show();
@@ -146,8 +140,7 @@ jQuery(document).ready(function ($) {
 /* End AZ Filter */
 
 
-
-    /* jQuery Search Filter */
+/* jQuery Search Filter */
 
     $( "#custom-search" ).keyup(function() {
         var singleValues = $(this).val();
@@ -172,30 +165,8 @@ jQuery(document).ready(function ($) {
     });
 
 
+/* Front Page Search Filter */
 
-    // Collapse
-    $( "#tabs-collapse" ).tabs({
-        show: { effect: "blind", duration: 800 },
-        hide: { effect: "blind", duration: 800 },
-        collapsible: true,
-        active: false
-    });
-
-    $( "#tabs-collapse-2" ).tabs({
-        show: { effect: "blind", duration: 800 },
-        hide: { effect: "blind", duration: 800 },
-        collapsible: true,
-        active: false
-    });
-
-    // Link to jQuery Tabs
-
-    // if($("#tabs") && document.location.hash) {
-    //     console.log('hash');
-    //     //$.scrollTo("#tabs");
-    // }
-
-    /* Front Page Search Filter */
     $( "#home-search" ).blur(function() {
         $('.search-dropdown-container').hide();
     });
@@ -216,8 +187,13 @@ jQuery(document).ready(function ($) {
     }
     $( "#home-search" ).keyup(searchSpeakers).focus(searchSpeakers); // clear search field when losing focus
 
-    /* Move Tag Cloud */
+
+/* Move Tag Cloud */
+
     $( ".tag-cloud p" ).replaceWith( $( "#tag-cloud" ));
+
+
+/* Initialize functions */
 
     function init() {
         getTabTitle();
