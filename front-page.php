@@ -29,7 +29,7 @@ get_header(); ?>
 								?>
 							</div>
 							<div class="searchform-home content-column one_third last_column">
-								<h4>Quick Search</h4>
+								<h3>Quick Search</h3>
 								<?php get_template_part('searchform-front-page');?>
 								 <ul id="home-browse" class="sb-ul">
 								    <li><a href="speakers/#topics">Browse Topics</a></li>
@@ -81,8 +81,7 @@ get_header(); ?>
 			<?php endwhile; ?>
 
 		</div><!-- #primary -->
-		
-		
+	
 		<?php get_sidebar( 'subsidiary' ); ?>
 		
 	</div><!-- #content -->

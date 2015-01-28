@@ -1,6 +1,7 @@
 <?php
 require_once( get_stylesheet_directory() . '/custom-post-types.php' );
 require_once( get_stylesheet_directory() . '/gw-gravity-forms-map-fields-to-field.php' );
+require_once( get_stylesheet_directory() . '/gravity-forms-custom-post-types/gfcptaddon.php' );
 
 // Add class to body on cpt pages
 
@@ -108,6 +109,32 @@ function custom_js_script()
 add_action('wp_enqueue_scripts', 'custom_js_script');
 
 
+/* Custom entry_meta for child theme */
+
+function twentythirteen_entry_meta() {  
+    
+    if ( ! has_post_format( 'link' ) && 'post' == get_post_type() )
+        twentythirteen_entry_date();
+        
+    // Translators: used between list items, there is a space after the comma.
+    $categories_list = get_the_category_list( __( ', ', 'twentythirteen' ) );
+    if ( $categories_list ) {
+    }
+    // Translators: used between list items, there is a space after the comma.
+    $tag_list = get_the_tag_list( '', __( ', ', 'twentythirteen' ) );
+    if ( $tag_list ) {
+        echo '<span class="tags-links">Keywords: ' . $tag_list . '</span>';
+    }
+}
+
+/* Change default excerpt length */
+
+function new_custom_excerpt_length( $length ) {
+    return 20;
+}
+add_filter( 'excerpt_length', 'new_custom_excerpt_length', 999 );
+
+
 /* Add custom post types to taxonomy pages */
 
 function add_custom_types_to_tax( $query ) {
@@ -122,52 +149,25 @@ function add_custom_types_to_tax( $query ) {
 }
 add_filter( 'pre_get_posts', 'add_custom_types_to_tax' );
 
-/* Custom entry_meta for child theme */
-
-function twentythirteen_entry_meta() {  
-    
-    if ( ! has_post_format( 'link' ) && 'post' == get_post_type() )
-        twentythirteen_entry_date();
-        
-    // Translators: used between list items, there is a space after the comma.
-    $categories_list = get_the_category_list( __( ', ', 'twentythirteen' ) );
-    if ( $categories_list ) {
-        //echo '<span class="categories-links">' . $categories_list . '</span>';
-    }
-    // $terms_list = get_the_term_list($post->ID, 'topics', '<span>Topics:</span>', ', ' );
-    // if ( $terms_list ) {
-    //     echo '<span class="terms-links">' . $terms_list . '</span>';
-    // }    
-
-    // Translators: used between list items, there is a space after the comma.
-    $tag_list = get_the_tag_list( '', __( ', ', 'twentythirteen' ) );
-    if ( $tag_list ) {
-        echo '<span class="tags-links">Keywords: ' . $tag_list . '</span>';
-    }
-}
-
-/* Change default excerpt length */
-function new_custom_excerpt_length( $length ) {
-    return 20;
-}
-add_filter( 'excerpt_length', 'new_custom_excerpt_length', 999 );
-
 /* Change order for speakers archive page */
 // Runs before the posts are fetched
 add_filter( 'pre_get_posts' , 'my_change_order' );
 // Function accepting current query
 function my_change_order( $query ) {
     // Check if the query is for an archive
-    if($query->is_archive && $query->is_main_query() && !is_admin() && is_post_type_archive('cpt-speakers'))
-        // Query was for archive, then set order
-        $query->set( 'meta_key', 'last_name' );
-        $query->set( 'orderby', 'meta_value' );
-        $query->set( 'order', 'ASC' );
+    if( $query->is_main_query() && $query->is_post_type_archive('cpt-speakers') && !is_admin() )
+        if ( !is_front_page() ) {
+            // Query was for archive, then set order
+            $query->set( 'meta_key', 'last_name' );
+            $query->set( 'orderby', 'meta_value' );
+            $query->set( 'order', 'ASC' );
+            $query->set( 'posts_per_archive_page', -1);
+        }
     // Return the query (else there's no more query, oops!)
     return $query;
 }
 
-/* Update ACF Fields with Form input */
+/* Update ACF Fields with Speaker Registration Form input */
 add_action("gform_after_submission_1", "acf_post_submission", 10, 2);
  
 function acf_post_submission ($entry, $form) {
@@ -186,6 +186,7 @@ function acf_post_submission ($entry, $form) {
     update_field('field_5491ce049d8d5', $entry['10.5'], $post_id);
     update_field('field_54a2e8dbe2bef', $entry['18'], $post_id); // Job Title (text)
     update_field('field_54b3f6db4e584', $entry['20'], $post_id); // Willing to speak to media (radio)
+    update_field('field_54a2eac9a6903', $entry['21'], $post_id); // Department (select)
     $cat_ids = explode(",", $entry['19']);
     $cat_ids = array_map( 'intval', $cat_ids );
     $cat_ids = array_unique( $cat_ids );
@@ -242,26 +243,64 @@ function acf_presentation_submission( $entry, $form ) {
 /* Add custom image size */
 add_image_size( 'homepage-thumb', 64, 64, array('center','top') ); // (cropped)
 add_image_size( 'speakers-thumb', 128, 128, array('center','top') ); // (cropped)
+add_image_size( 'speakers-single', 225, 275, array('center','top') ); // (cropped)
 
 /* Ajax Functions */
 function MyAjaxFunction(){
-  //get the data from ajax() call
-   $GreetingAll = $_POST['GreetingAll'];
-   $results = "<h2>".$GreetingAll."</h2>";
+    //get the data from ajax() call
+    $spkPostID = $_POST['spkPostId'];
+    $results = "<h2>".$spkPostID."</h2>";
+
+    $args = array(
+    'numberposts' => -1,
+    'post_type' => 'cpt-presentations',
+    'meta_query' => array(
+        'relation' => 'OR',
+            array(
+                'key' => 'speaker_name',
+                'value' => $spkPostID,
+                'compare' => 'LIKE'
+            )
+        )   
+    );
+
+    
+
+    add_filter('gform_pre_render_6', 'populate_posts');
+
+    function populate_posts($form){
+        print_r($args);
+        foreach($form['fields'] as &$field){
+            
+            if($field['type'] != 'select' || strpos($field['cssClass'], 'populate-posts') === false)
+                continue;
+            
+            // you can add additional parameters here to alter the posts that are retreieved
+            // more info: http://codex.wordpress.org/Template_Tags/get_posts
+            $posts = get_posts('numberposts=-1&post_status=publish');
+            
+            // update 'Select a Post' to whatever you'd like the instructive option to be
+            $choices = array(array('text' => 'Select a Post', 'value' => ' '));
+            
+            foreach($posts as $post){
+                $choices[] = array('text' => $post->post_title, 'value' => $post->post_title);
+            }
+            
+            $field['choices'] = $choices;
+            
+        }
+        
+        return $form;
+    }
+
    die($results);
 }
   // creating Ajax call for WordPress
    add_action( 'wp_ajax_nopriv_MyAjaxFunction', 'MyAjaxFunction' );
    add_action( 'wp_ajax_MyAjaxFunction', 'MyAjaxFunction' );
 
-/* Edit Query */
-// function speakers_posts_per_page($query) {
-//     if ( is_post_type_archive('cpt-speakers') && ! is_admin() ) {
-//        // Set query parameters
-//         return; // return posts
-//     }
-// }
-// add_action('pre_get_posts','speakers_posts_per_page');
+
+/* Limit number of choices on Gravity form select field */
 
 add_action("gform_pre_render", "set_chosen_options"); 
 function set_chosen_options($form){
@@ -347,16 +386,18 @@ function myplugin_meta_box_callback( $post ) {
     <?php wp_reset_query();  // Restore global post data stomped by the_post().    
 }
 
-function get_http() {
-    $url = 'http://wwwdevlocal.uwm.edu/summer-courses/plugins/';
 
-    $request = new WP_Http;
-    $result = $request->request($url);
-    $content = array();
-    var_dump($result);
-    if (isset($result->errors)) {
-        // display error message of some sort
-    } else {
-        $content = $result['body'];
-    }
-}
+
+// function get_http() {
+//     $url = 'http://wwwdevlocal.uwm.edu/summer-courses/plugins/';
+
+//     $request = new WP_Http;
+//     $result = $request->request($url);
+//     $content = array();
+//     var_dump($result);
+//     if (isset($result->errors)) {
+//         // display error message of some sort
+//     } else {
+//         $content = $result['body'];
+//     }
+// }

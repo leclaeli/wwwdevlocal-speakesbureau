@@ -41,4 +41,25 @@ jQuery(document).ready(function($) {
     //   }
     // });
   });
+  
+  
+  $("#input_6_3").change(function(){ 
+    var spkPostId = $("#input_6_3").val();
+    console.log(spkPostId);
+    jQuery.ajax(myAjax.ajaxurl,{
+      type: "post",
+      data: {
+        action: 'MyAjaxFunction',
+        spkPostId: spkPostId,
+      },
+      success: function(data, textStatus, XMLHttpRequest){
+        //jQuery("#test-div1").html('');
+        jQuery("#post-96").append(data);
+      },
+      error: function(MLHttpRequest, textStatus, errorThrown){
+        alert(errorThrown);
+      }
+    });
+  });
+
 });

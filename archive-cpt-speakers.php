@@ -115,12 +115,13 @@ get_header(); ?>
                                         <a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a>
                                 </h1>
                                 
-                                <?php if( get_field('job_title') || get_field('department') ): ?>
-                                    <p id="job-title"><?php echo get_field('job_title') . ', <span>' . get_field('department') . '</span>'; ?></p>
+                                <?php if( get_field('job_title') ): ?>
+                                    <p id="job-title"><?php echo get_field('job_title'); ?>
+                                <?php endif; ?>
+                                <?php if( get_field('department') ): ?>
+                                    <span><?php echo ', ' . get_field('department'); ?></span></p>
                                 <?php endif; ?>
                                     
-                                
-                                    <?php //display_topics(", "); ?>
                                     <?php $term_list = get_the_term_list( $post->ID, 'topics', '', ', ' );
                                     if ($term_list) {
                                         echo '<div><h2 id="speaker-topics">Topics:</h2><p>' . $term_list . '</p></div>';

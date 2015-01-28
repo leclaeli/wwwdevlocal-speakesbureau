@@ -22,8 +22,8 @@ if (!isset($_COOKIE['TestCookie'])) {
 
 				  ?>
 
-				<?php get_template_part( 'content', 'speakers' ); ?>
-
+				<?php get_template_part( 'content', 'presentations' ); ?>
+				
 			<?php endwhile; ?>
 
 		</div><!-- #primary -->
