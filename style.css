@@ -280,7 +280,7 @@ Version:        0.1
 	height: auto;
 }
 
-#quick-links h4:before {
+#quick-links h3:before {
 	content: "\f0c1";
 	font: 18px/1 FontAwesome;
 	padding-right: 10px;
@@ -467,6 +467,7 @@ Version:        0.1
     overflow: auto;
     /*box-shadow: 0 25px 20px -20px rgba(0, 0, 0, 0.5) inset; */
     padding: 0;
+    outline: none;
 }
 
 /* Topics */

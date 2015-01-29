@@ -245,6 +245,34 @@ add_image_size( 'homepage-thumb', 64, 64, array('center','top') ); // (cropped)
 add_image_size( 'speakers-thumb', 128, 128, array('center','top') ); // (cropped)
 add_image_size( 'speakers-single', 225, 275, array('center','top') ); // (cropped)
 
+// add_filter('gform_pre_render_6', 'populate_posts');
+
+//     function populate_posts($form) {
+
+//         foreach($form['fields'] as &$field){
+            
+//             if($field['type'] != 'select' || strpos($field['cssClass'], 'populate-posts') === false)
+//                 continue;
+            
+//             // you can add additional parameters here to alter the posts that are retreieved
+//             // more info: http://codex.wordpress.org/Template_Tags/get_posts
+//             $posts = get_posts('numberposts=-1&post_status=publish');
+            
+//             // update 'Select a Post' to whatever you'd like the instructive option to be
+//             $choices = array(array('text' => 'Select a Post', 'value' => ' '));
+            
+//             foreach($posts as $post){
+//                 $choices[] = array('text' => $post->post_title, 'value' => $post->post_title);
+//             }
+            
+//             $field['choices'] = $choices;
+            
+//         }
+        
+//         return $form;
+//     }
+
+
 /* Ajax Functions */
 function MyAjaxFunction(){
     //get the data from ajax() call
@@ -252,49 +280,28 @@ function MyAjaxFunction(){
     $results = "<h2>".$spkPostID."</h2>";
 
     $args = array(
-    'numberposts' => -1,
-    'post_type' => 'cpt-presentations',
-    'meta_query' => array(
-        'relation' => 'OR',
-            array(
-                'key' => 'speaker_name',
-                'value' => $spkPostID,
-                'compare' => 'LIKE'
-            )
-        )   
-    );
-
-    
-
-    add_filter('gform_pre_render_6', 'populate_posts');
-
-    function populate_posts($form){
-        print_r($args);
-        foreach($form['fields'] as &$field){
-            
-            if($field['type'] != 'select' || strpos($field['cssClass'], 'populate-posts') === false)
-                continue;
-            
-            // you can add additional parameters here to alter the posts that are retreieved
-            // more info: http://codex.wordpress.org/Template_Tags/get_posts
-            $posts = get_posts('numberposts=-1&post_status=publish');
-            
-            // update 'Select a Post' to whatever you'd like the instructive option to be
-            $choices = array(array('text' => 'Select a Post', 'value' => ' '));
-            
-            foreach($posts as $post){
-                $choices[] = array('text' => $post->post_title, 'value' => $post->post_title);
-            }
-            
-            $field['choices'] = $choices;
-            
+        'numberposts' => -1,
+        'post_type' => 'cpt-presentations',
+        'meta_query' => array(
+            'relation' => 'OR',
+                array(
+                    'key' => 'speaker_name',
+                    'value' => $spkPostID,
+                    'compare' => 'LIKE'
+                )
+            )   
+        );
+   
+    $posts = get_posts( $args );
+   
+        $choices = array(array('text' => 'Select a Presentation', 'value' => ' '));
+        foreach($posts as $post){
+            $choices[] = array('text' => $post->post_title, 'value' => $post->post_title);
         }
-        
-        return $form;
-    }
-
-   die($results);
+    echo json_encode( $choices );
+    die;
 }
+
   // creating Ajax call for WordPress
    add_action( 'wp_ajax_nopriv_MyAjaxFunction', 'MyAjaxFunction' );
    add_action( 'wp_ajax_MyAjaxFunction', 'MyAjaxFunction' );

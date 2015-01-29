@@ -75,7 +75,7 @@ get_header(); ?>
                 ?>
                 </div>
                 <div id="quick-links" class="one_third last_column searchform-home">
-                    <h4>Quick Links</h4>
+                    <h3>Quick Links</h3>
                     <ul class="sb-ul">
                         <li><a href="">Request a Speaker</a></li>
                         <li><a href="">Become a Speaker</a></li>
