@@ -90,7 +90,7 @@ get_header(); ?>
                     <li><a href="#topics">Topics</a></li>
                     <li><a href="#presentations">Presentations</a></li>
                 </ul>
-                <div id="count-bar"></div>
+                <div id="count-bar">Number of Results: <span id='results'></span><span id="clear">Clear/Show All</span></div>
                 <div id="speakers">
                     <div id="speaker-container">
                         <?php /* The loop */ ?>

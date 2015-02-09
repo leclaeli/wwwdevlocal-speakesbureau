@@ -16,6 +16,8 @@ jQuery(document).ready(function ($) {
                 var scrollTop = $(window).scrollTop();
                 window.location.hash = ui.newPanel.attr('id');
                 $(window).scrollTop(scrollTop);
+                // Keep search persistance
+                $( "#custom-search" ).trigger('keyup');
             }
         });
     });
@@ -39,20 +41,21 @@ jQuery(document).ready(function ($) {
         
     }
 
-    // Get the current tab when clicked
+    // Get the current tab when clicked and maintain search persistance
     $('.ui-tabs-nav').on('click', 'li', function(event) {
         $('.az-checkbox [type="checkbox"]').prop('checked', false);
-
         getTabTitle();
         createAz(tabTitle);
         numberResults(tabTitle);
         $('#not-found').remove();
+        //keep search persistance
+        $( "#custom-search" ).trigger('keyup');
     });
 
     // Count Bar - Speakers page
     function numberResults(currentSelector) {
         var displayed = $(currentSelector).filter(":visible").length;
-        $('#count-bar').text('Number of Results: '+displayed);
+        $('#count-bar #results').text(displayed);
     }
 
     // Collapse tabs on home page */
@@ -87,8 +90,8 @@ jQuery(document).ready(function ($) {
     $('.pres-item a').each(function( index ) {
         var presentation = $( this ).text();
         var firstLetter = presentation.charAt(0);
-        $(this).attr("data-bookmark", firstLetter);
-        $(this).parent().attr("data-bookmark", firstLetter);
+        $(this).attr("data-bookmark", firstLetter).parent().attr("data-bookmark", firstLetter);
+        
     });
 
     // Create the A-Z Filter Checkboxes
@@ -110,8 +113,9 @@ jQuery(document).ready(function ($) {
     }
     
     $('.az-placeholder').remove();
-    $('.az-checkbox [type="checkbox"]').prop('checked', false);
-    $('.two_third').on('change', '.az-checkbox [type="checkbox"]', function(event) {
+    $('.az-checkbox [type="checkbox"]').prop('checked', false); // set checked prop to false on load
+    $('.two_third').on('change', '.az-checkbox [type="checkbox"]', function( event ) {
+        $('.az-filter').removeClass('even');
         //Act on the event */
         letter = $(this).siblings('label').text();
         if ($(this).prop('checked')) {
@@ -126,16 +130,22 @@ jQuery(document).ready(function ($) {
             $('article, .cat-item, .pres-item').each(function() {
                 $('article, .cat-item, .pres-item').not('.az-filter').hide();
                 $('.az-filter').show();
+                $('#count-bar #clear').show(); // show 'clear filter/show all' button
             });
         } else {
-            $('#not-found').remove();
             $('article, .cat-item, .pres-item').each(function() {
-                $('article, .cat-item, pres-item').show();
+                $('article, .cat-item, .pres-item').show();
             });
+            $('#count-bar #clear').hide(); // hide 'clear filter/show all' button
         }
         getTabTitle();
         numberResults(tabTitle);
+        addClassEven();
     });
+
+function addClassEven() {
+    $('.az-filter').filter(':even').addClass('even');
+}
 
 /* End AZ Filter */
 
@@ -143,6 +153,11 @@ jQuery(document).ready(function ($) {
 /* jQuery Search Filter */
 
     $( "#custom-search" ).keyup(function() {
+        $('#speaker-search .fa-times, #count-bar #clear').show();
+        if( !$('#custom-search').val() && $('input:checkbox:checked').length == 0 ) {
+            $('#speaker-search .fa-times, #count-bar #clear').hide();
+            console.log('hide');
+        }
         var singleValues = $(this).val();
         $('article').removeClass('found').show();
         if($("article").hasClass("az-filter")){
@@ -150,18 +165,25 @@ jQuery(document).ready(function ($) {
         } else {
             $(".entry-wrapper:contains('" + singleValues + "')" ).parents('article').addClass("found");
         }
-        $('.cat-item').removeClass('found').show();
-        if($(".cat-item").hasClass("az-filter")){
-            console.log('has class az filter');
+        
+        $('.cat-item, .pres-item').removeClass('found').show();
+        if($(".cat-item, .pres-item").hasClass("az-filter")){
             $(".az-filter:contains('" + singleValues + "')" ).addClass("found");
         } else {
             $(".cat-item:contains('" + singleValues + "')" ).addClass("found");
+            $(".pres-item:contains('" + singleValues + "')" ).addClass("found");
         }
+
         $('article').not(".found").hide();
         $('.cat-item').not(".found").hide();
+        $('.pres-item').not(".found").hide();
         //$("#ptag").html( "<b>Single:</b> " + singleValues);
         getTabTitle();
         numberResults(tabTitle);
+    });
+    $('#speaker-search .fa-times, #count-bar #clear').click(function(event) {
+        $( '.az-checkbox [type="checkbox"]' ).prop('checked', false).trigger('change');// set checked prop to false and remove checked a-z filter
+        $( '#custom-search' ).val('').trigger('keyup'); // clear contents of search input when button is clicked and trigger keyup event to hide button again
     });
 
 
@@ -174,7 +196,6 @@ jQuery(document).ready(function ($) {
         var singleValues = $('#home-search').val();
         $('.search-dropdown-container li').removeClass('found').show();
         if( $('#home-search').val() ) {
-            console.log(singleValues);
             $('.search-dropdown-container').show();
             $(".search-dropdown-container li:contains('" + singleValues + "')" ).addClass("found");
             $('.search-dropdown-container li').not(".found").hide();
@@ -191,6 +212,7 @@ jQuery(document).ready(function ($) {
 /* Move Tag Cloud */
 
     $( ".tag-cloud p" ).replaceWith( $( "#tag-cloud" ));
+
 
 
 /* Initialize functions */

@@ -276,6 +276,21 @@ Version:        0.1
 	margin: 0;
 }
 
+#speaker-search .fa-times {
+    display: none;
+}
+
+#speaker-search .fa-times:before {
+  position: relative;
+  right: 30px;
+  color: #ccc;
+}
+
+#speaker-search .fa-times:hover:before {
+  color: #495058;
+  cursor: pointer;
+}
+
 #quick-links {
 	height: auto;
 }
@@ -288,12 +303,6 @@ Version:        0.1
 
 #quick-links a {
 	color: #fff;
-}
-
-.az-filter {
-}
-
-.az-checkbox {
 }
 
 .az-checkbox .checked {
@@ -323,13 +332,28 @@ Version:        0.1
 }
 
 #count-bar {
-	background-color: #495058;
 	background-color: #7E8285;
 	color: #ccc;
 	font-size: 14px;
 	font-weight: 300;
 	padding: 10px 18px;
     margin-bottom: 4px;
+}
+
+#count-bar #clear {
+  background-color: #ccc;
+  border-radius: 4px;
+  font-size: 0.8em;
+  margin-left: 20px;
+  padding: 3px 6px;
+  vertical-align: text-bottom;
+  color: #7e8285;
+  display: none;
+}
+
+#count-bar #clear:hover {
+  color: #000;
+  cursor: pointer;
 }
 
 
@@ -346,7 +370,11 @@ Version:        0.1
 }
 
 #tabs article:nth-child(odd) {
-	margin-right: 2%;
+    margin-right: 2%;
+}
+
+#tabs article.even {
+    margin-right: 2%;
 }
 
 #tabs article .entry-title,
