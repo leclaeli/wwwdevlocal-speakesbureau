@@ -35,7 +35,7 @@ get_header(); ?>
                         _e( 'Find a Speaker', 'twentythirteen' );
                     endif;
                 ?></h1>
-                <div class="two_third">
+                <div class="content-column two_third">
                     <?php get_template_part('searchform-cpt_speakers');?>
                     <div class="az-filter">
                         <h4>A-Z Filter</h4>
@@ -74,7 +74,7 @@ get_header(); ?>
                     // endwhile; 
                 ?>
                 </div>
-                <div id="quick-links" class="one_third last_column searchform-home">
+                <div id="quick-links" class="content-column one_third last_column searchform-home">
                     <h3>Quick Links</h3>
                     <ul class="sb-ul">
                         <li><a href="">Request a Speaker</a></li>
@@ -101,15 +101,17 @@ get_header(); ?>
                             }
                         ?>
                         <article id="post-<?php the_ID(); ?>" <?php post_class(); ?> data-bookmark="<?php echo $first_char; ?>">
-                            <?php if ( has_post_thumbnail() && ! post_password_required() ) : ?>
+                            <?php if ( has_post_thumbnail() && ! post_password_required() ) { ?>
+                                <div class="cpt-thumbnail">
+                                    <a href="<?php echo get_permalink(); ?>"><?php the_post_thumbnail('speakers-thumb'); ?></a>
+                                </div>
+    
+                            
+                            <?php  } else { ?>
                             <div class="cpt-thumbnail">
-                                <a href="<?php echo get_permalink(); ?>"><?php the_post_thumbnail('speakers-thumb'); ?></a>
+                                <a href="<?php echo get_permalink(); ?>" rel="bookmark"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/profile-default-thumb.jpg" alt="Default profile picture - graphic of person" title="Default profile picture"></a>
                             </div>
-                            <?php else: ?>
-                            <div class="cpt-thumbnail">
-                                <a href="<?php echo get_permalink(); ?>"><img src="<?php echo get_site_url() ?>/wp-content/uploads/sites/79/2014/11/profile-default-128x128.jpg" width="128" height="128" /></a>
-                            </div>
-                            <?php endif; ?>
+                            <?php } ?>
                             <div class="entry-wrapper">
                                 <h1 id="speaker-name" class="entry-title">
                                         <a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a>
@@ -157,10 +159,30 @@ get_header(); ?>
                 <?php endif; ?>
                 
                 <div id="topics">
-                    <ul>
-                        <?php wp_list_categories('orderby=name&taxonomy=topics&title_li='); ?>
-                    </ul>
-                    <ul>
+                    <?php
+                        //wp_list_categories( 'title_li=&taxonomy=topics' );
+                        $cat_params = 'echo=0&style=none&title_li=&taxonomy=topics&hide_empty=1';
+                        $cats = explode('<br />', wp_list_categories($cat_params));
+                        $cat_n = count($cats) - 1;
+                        $cat_left = $cat_middle = $cat_right = '';
+                        for ( $i = 0; $i < $cat_n; $i++ ) {
+                            if ( $i < $cat_n/3 ) {
+                                $cat_left = $cat_left.'<li class="cat-item">'.$cats[$i].'</li>';
+                            }
+                            elseif ( $i < ( $cat_n/3 ) * 2 ) {
+                                $cat_middle = $cat_middle.'<li class="cat-item">'.$cats[$i].'</li>'; 
+                            }
+                            elseif ( $i >= ( $cat_n / 3 ) * 2 ) {
+                                $cat_right = $cat_right.'<li class="cat-item">'.$cats[$i].'</li>'; 
+                            }
+                        } 
+                    ?>
+                    <div class="content-column one_third"><ul><?php echo $cat_left; ?></ul></div>
+                    <div class="content-column one_third"><ul><?php echo $cat_middle; ?></ul></div>
+                    <div class="content-column one_third last_column"><ul><?php echo $cat_right; ?></ul></div>
+                    <div class="clear_column"></div>
+                    
+                    <!-- <ul>
                     <?php
                     $important = array( 'numberposts' => 5, 'post_type' => 'cpt-speakers', 'category' => 9 );
                     
@@ -171,7 +193,7 @@ get_header(); ?>
                         </li>
                     <?php endforeach; 
                     wp_reset_postdata();?>
-                    </ul>
+                    </ul> -->
                 </div>
                 <div id="presentations">
                     List of presentations:

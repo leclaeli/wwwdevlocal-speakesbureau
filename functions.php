@@ -96,7 +96,7 @@ function custom_js_script()
     wp_enqueue_script('jquery-ui-tabs');
     wp_enqueue_script('jquery-effects-blind');
     wp_enqueue_style('plugin_name-admin-ui-css',
-        'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/themes/smoothness/jquery-ui.css',
+        'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/themes/smoothness/jquery-ui.css',
         false,
         false,
         false

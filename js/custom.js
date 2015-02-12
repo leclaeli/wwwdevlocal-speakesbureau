@@ -80,10 +80,10 @@ jQuery(document).ready(function ($) {
     var catLetters = [];
     
     // Add data-bookmark="" to .cat-item li
-    $('.cat-item').each(function( index ) {
+    $('.cat-item a').each(function( index ) {
         var topic = $( this ).text();
         var firstLetter = topic.charAt(0);
-        $(this).attr("data-bookmark", firstLetter);
+        $(this).attr("data-bookmark", firstLetter).parent().attr("data-bookmark", firstLetter);
     });
 
     // Add data-bookmark="" to .pres-item
@@ -115,7 +115,7 @@ jQuery(document).ready(function ($) {
     $('.az-placeholder').remove();
     $('.az-checkbox [type="checkbox"]').prop('checked', false); // set checked prop to false on load
     $('.two_third').on('change', '.az-checkbox [type="checkbox"]', function( event ) {
-        $('.az-filter').removeClass('even');
+        $('.az-filter').removeClass('even odd');
         //Act on the event */
         letter = $(this).siblings('label').text();
         if ($(this).prop('checked')) {
@@ -140,11 +140,12 @@ jQuery(document).ready(function ($) {
         }
         getTabTitle();
         numberResults(tabTitle);
-        addClassEven();
+        addClassEvenOdd();
     });
 
-function addClassEven() {
-    $('.az-filter').filter(':even').addClass('even');
+function addClassEvenOdd() {
+    $('#speakers .az-filter').filter(':even').addClass('even');
+    $('#speakers .az-filter').filter(':odd').addClass('odd');
 }
 
 /* End AZ Filter */
@@ -189,9 +190,19 @@ function addClassEven() {
 
 /* Front Page Search Filter */
 
-    $( "#home-search" ).blur(function() {
-        $('.search-dropdown-container').hide();
-    });
+var $input = $( '#home-search' );
+
+$(document).click( function(evt) {
+   var $tgt = $(evt.target);
+   if( !$tgt.is( '.search-dropdown-container') && !$tgt.is($input) ) {
+         $input.blur();
+         $('.search-dropdown-container').hide();
+    }
+})
+
+    // $( "#home-search" ).blur(function() {
+    //     $('.search-dropdown-container').hide();
+    // });
     function searchSpeakers() {
         var singleValues = $('#home-search').val();
         $('.search-dropdown-container li').removeClass('found').show();

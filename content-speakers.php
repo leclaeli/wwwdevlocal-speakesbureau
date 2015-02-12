@@ -18,6 +18,8 @@
 		<div class="entry-thumbnail">
 		<?php if ( has_post_thumbnail() && ! post_password_required() ) : ?>
 			<?php the_post_thumbnail('speakers-single'); ?>
+		<?php else: ?>
+			<a href="<?php the_permalink(); ?>" rel="bookmark"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/profile-default.jpg" alt="Default profile picture - graphic of person" title="Default profile picture"></a>
 		<?php endif; ?>	
 			<div class="speaker-contact">
 			<?php if( get_field('campus_email') ): ?>
