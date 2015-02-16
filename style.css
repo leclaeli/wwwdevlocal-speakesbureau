@@ -267,6 +267,12 @@ Version:        0.1
 	color: #fff;
 }
 
+.home .site-content,
+.page-template-page-templatesfront-page-php article  {
+	margin-bottom: 0;
+}
+
+
 
 /* Speakers and Topics */
 
@@ -693,6 +699,7 @@ span.az-checkbox {
 	font-size: 14px;
 }
 
+
 /* Single Presentations Page */
 .single-cpt-presentations .entry-header {
 	border-bottom: 1px solid #ccc;
@@ -745,7 +752,12 @@ span.az-checkbox {
   color: #fff;
 }
 
-
+/* Single Speaker's Sidebar*/
+#page #search-container {
+	padding: 0;
+	margin: 0;
+	width: 71%;
+}
 
 /* Forms */
 body .gform_wrapper .gform_body .gform_fields .chosen-container-multi .chosen-choices {
