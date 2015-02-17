@@ -55,84 +55,6 @@ Version:        0.1
   margin-bottom: 40px;
 }
 
-.home .searchform-home {
-	height: 250px;
-	overflow: visible;
-}
-
-.searchform-home h3:before {
-	content: "\f002";
-	font: 18px/1 FontAwesome;
-	padding-right: 10px;
-}
-
-#search-container {
-	position: relative;
-	width: 72%;
-	display: inline-block;
-}
-
-#home-s-form {
-	margin: 20px;
-}
-
-#home-s-form [type="search"] {
-	width: 100%;
-	margin: 0;
-}
-
-#home-s-form [type="submit"] {
-	height: 53px;
-}
-
-.search-dropdown-container {
-  display: none;
-  position: absolute;
-  width: 201px;
-  max-height: 300px;
-  overflow: auto;
-  border: 2px solid #ccc;
-  top: 136px;
-  left: 20px;
-  background-color: #f1f1f1;
-  box-shadow: 0 3px 3px #555;
-}
-
-.search-dropdown-container ul {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-.search-dropdown-container ul li a {
-	color: #495058;
-	font-size: 14px;
-	display: block;
-	padding: 4px 16px;
-}
-
-.search-dropdown-container ul li:hover {
-	background-color: #495058;
-}
-
-.search-dropdown-container ul li:hover a {
-	color: #fff;
-}
-
-#home-browse {
-  margin: 0;
-  padding: 0 40px;
-}
-
-#home-browse li {
-  color: #fff;
-  margin: 0;
-}
-
-#home-browse a {
-  color: #fff;
-}
-
 .home-info {
   padding-right: 40px;
 }
@@ -430,7 +352,7 @@ span.az-checkbox {
 
 #speaker-container p a,
 #speaker-container p,
-#job-title {
+#speaker-container ul li a {
 	font-size: 12px;
 	color: #ddd;
 	margin: 0 0 10px;
@@ -449,15 +371,44 @@ span.az-checkbox {
 	text-decoration: underline;
 }
 
-#job-title span {
-	font-style: italic;
+#speakers #job-title {
+	font-size: 13px;
+	font-weight: 500;
+	color: #fff;
 }
 
-#speaker-container h2 {
-	font-size: 14px;
-	font-weight: 400;
+#job-title span {
+	font-style: italic;
+	font-weight: normal;
+}
+
+#speakers .dashicons-category:before,
+#speakers .dashicons-format-aside:before {
+	font-size: 12px;
+}
+
+#speaker-container h5 {
+	font-size: 12px;
+	font-weight: 500;
 	margin: 0;
 	clear: none;
+}
+
+#speaker-topics,
+#speaker-presentations {
+  display: inline-block;
+}
+
+#speaker-container ul {
+	margin: 0 20px 6px;
+	padding: 0;
+	list-style-type: circle;
+	color: #ccc;
+}
+
+#speaker-container li {
+	line-height: 12px;
+	padding: 0 0 6px;
 }
 
 .entry-meta > span {
@@ -710,8 +661,77 @@ span.az-checkbox {
 ** Sidebars
 */
 
+.quick-search {
+	display: inline-block;
+	height: 250px;
+	overflow: visible;
+}
+
+.quick-search h3:before {
+	content: "\f002";
+	font: 18px/1 FontAwesome;
+	padding-right: 10px;
+}
+
+#search-container {
+	position: relative;
+	width: 71%;
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+}
+
+#home-s-form {
+	margin: 20px;
+}
+
+#home-s-form [type="search"] {
+	width: 100%;
+	margin: 0;
+}
+
+#home-s-form [type="submit"] {
+	height: 53px;
+}
+
+.search-dropdown-container {
+  display: none;
+  position: absolute;
+  width: 201px;
+  max-height: 300px;
+  overflow: auto;
+  border: 2px solid #ccc;
+  top: 136px;
+  left: 20px;
+  background-color: #f1f1f1;
+  box-shadow: 0 3px 3px #555;
+}
+
+.widget-area .search-dropdown-container,
+.search-dropdown-container ul,
+.widget-area .search-dropdown-container ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.quick-search .search-dropdown-container ul li a {
+	color: #495058;
+	font-size: 14px;
+	display: block;
+	padding: 4px 16px;
+}
+
+.search-dropdown-container ul li:hover {
+	background-color: #495058;
+}
+
+.search-dropdown-container ul li:hover a {
+	color: #fff;
+}
+
 .widget-area aside,
-.searchform-home {
+.quick-search {
 	background: rgba(83,130,175,1);
 	background-color: #4e84b2; /* from uwm home page */
 	background: rgba(78,131,178,1);
@@ -723,13 +743,13 @@ span.az-checkbox {
 	background: linear-gradient(to bottom, rgba(78,131,178,1) 0%, rgba(78,131,178,1) 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4e83b2', endColorstr='#4e83b2', GradientType=0 );
 	position: relative;
-	overflow: auto;
+	overflow: visible;
 	margin-bottom: 40px;
 }
 
 .widget-area aside h3,
 .widget .widget-title,
-.searchform-home h3 {
+.quick-search h3 {
 	background-color: #495058;
 	border-bottom: 2px solid;
 	color: #fff;
@@ -753,11 +773,7 @@ span.az-checkbox {
 }
 
 /* Single Speaker's Sidebar*/
-#page #search-container {
-	padding: 0;
-	margin: 0;
-	width: 71%;
-}
+/* .!.!.! */
 
 /* Forms */
 body .gform_wrapper .gform_body .gform_fields .chosen-container-multi .chosen-choices {

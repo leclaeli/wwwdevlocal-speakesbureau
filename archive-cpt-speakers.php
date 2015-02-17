@@ -124,15 +124,67 @@ get_header(); ?>
                                     <span><?php echo ', ' . get_field('department'); ?></span></p>
                                 <?php endif; ?>
                                     
-                                    <?php $term_list = get_the_term_list( $post->ID, 'topics', '', ', ' );
+                                   
+
+<?php
+// args
+$postid = get_the_ID();
+//echo $my_slug;
+$args = array(
+    'numberposts' => -1,
+    'post_type' => 'cpt-presentations',
+    'meta_query' => array(
+        'relation' => 'OR',
+            array(
+                'key' => 'speaker_name',
+                'value' => $postid,
+                'compare' => 'LIKE'
+            )
+        )
+        
+);
+
+
+// get results
+$the_query = new WP_Query( $args );
+
+// The Loop
+?>
+<?php if( $the_query->have_posts() ): ?>
+    <span class="dashicons dashicons-format-aside"></span><h5 id="speaker-presentations">Presentations:</h5>
+    <ul>
+    <?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
+        <li>
+            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+            <?php $term_list = get_the_term_list( $post->ID, 'topics', '', ', ' );
+                if ($term_list) {
+                    //echo '<div><p>' . $term_list . '</p></div>';
+                }
+            ?>
+        
+        </li>
+    <?php endwhile; ?>
+    </ul>
+<?php endif; ?>
+
+<?php wp_reset_query();  // Restore global post data stomped by the_post(). ?>
+                                    
+
+                                <?php $term_list = get_the_term_list( $post->ID, 'topics', '', ', ' );
                                     if ($term_list) {
-                                        echo '<div><h2 id="speaker-topics">Topics:</h2><p>' . $term_list . '</p></div>';
+                                        echo '<div><span class="dashicons dashicons-category"></span><h5 id="speaker-topics">Topics:</h5><p>' . $term_list . '</p></div>';
                                     }
-                                    $tag_list = get_the_tag_list( '', __( ', ', 'twentythirteen' ) );
-                                    if ( $tag_list ) {
-                                        echo '<div><h2 id="speaker-keywords">Keywords:</h2><p>' . $tag_list . '</p></div>';
-                                    }
-                                    ?>
+                                    // $tag_list = get_the_tag_list( '', __( ', ', 'twentythirteen' ) );
+                                    // if ( $tag_list ) {
+                                    //     echo '<div><h5 id="speaker-keywords">Keywords:</h5><p>' . $tag_list . '</p></div>';
+                                    // }
+                                ?>
+
+
+
+
+
+
                                     <?php //twentythirteen_entry_meta(); ?>
                                
 
