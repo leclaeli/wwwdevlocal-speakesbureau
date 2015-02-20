@@ -59,29 +59,29 @@ add_action('init', 'set_new_cookie');
 *  temporarily initialized within the loop
 *  Read more: http://codex.wordpress.org/Template_Tags/get_posts#Reset_after_Postlists_with_offset
 */
-function display_topics($separator = "")
-{
-    global $post;
-    $post_objects = get_field('acf_topics');
-    $i=0;
-    if($post_objects):
-        foreach($post_objects as $post): // variable must be called $post (IMPORTANT)
-            setup_postdata($post);
-            $my_permalink = get_permalink();
-            echo "<a href=" . esc_url($my_permalink) . ">";
-            $my_title = get_the_title();
-            if ($i>0) {
-                echo $separator . $my_title;
-            } else {
-                echo $my_title;
-            }
-            echo "</a>";
-            $i++;
-        endforeach;
-        echo '</span>';
-        wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly
-    endif;
-}
+// function display_topics($separator = "")
+// {
+//     global $post;
+//     $post_objects = get_field('acf_topics');
+//     $i=0;
+//     if($post_objects):
+//         foreach($post_objects as $post): // variable must be called $post (IMPORTANT)
+//             setup_postdata($post);
+//             $my_permalink = get_permalink();
+//             echo "<a href=" . esc_url($my_permalink) . ">";
+//             $my_title = get_the_title();
+//             if ($i>0) {
+//                 echo $separator . $my_title;
+//             } else {
+//                 echo $my_title;
+//             }
+//             echo "</a>";
+//             $i++;
+//         endforeach;
+//         echo '</span>';
+//         wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly
+//     endif;
+// }
 
 
 /**
@@ -198,7 +198,7 @@ function acf_post_submission ($entry, $form) {
     }
 }
 
-/* Update ACF Fields with Gravity Form input */
+/* Update Presentation Posts with Gravity Form input */
 add_action("gform_after_submission_3", "acf_presentation_submission", 10, 2);
  
 function acf_presentation_submission( $entry, $form ) {
@@ -282,6 +282,7 @@ function MyAjaxFunction(){
     $args = array(
         'numberposts' => -1,
         'post_type' => 'cpt-presentations',
+        'post_status' => array( 'pending', 'draft', 'publish' ),
         'meta_query' => array(
             'relation' => 'OR',
                 array(
@@ -331,7 +332,7 @@ function set_chosen_options($form){
 
 
 /**
- * Adds a box to the main column on the Post and Page edit screens.
+ * Adds a list of presentations to the edit page of each speaker's.
  */
 function myplugin_add_meta_box() {
 
@@ -348,8 +349,6 @@ function myplugin_add_meta_box() {
     }
 }
 add_action( 'add_meta_boxes', 'myplugin_add_meta_box' );
-
-
 
 /**
  * Prints the box content.
@@ -391,6 +390,32 @@ function myplugin_meta_box_callback( $post ) {
     <?php endif; ?>
 
     <?php wp_reset_query();  // Restore global post data stomped by the_post().    
+}
+
+/*
+** Dynamically Populate the "Name of Speaker" field on the "Add a Presentation" 
+** form to also include post_status = 'draft'
+*/
+
+add_filter( 'gform_pre_render_3', 'populate_dropdown' );
+add_filter( 'gform_pre_validation_3', 'populate_dropdown' );
+add_filter( 'gform_pre_submission_filter_3', 'populate_dropdown' );
+add_filter( 'gform_admin_pre_render_3', 'populate_dropdown' );
+
+function populate_dropdown ( $form ) {
+    foreach($form['fields'] as &$field) {
+        if ( $field->type != 'select' || strpos( $field->cssClass, 'select-speaker' ) === false ) {
+            continue;
+        }
+        $posts = get_posts('post_type=cpt-speakers&numberposts=-1&post_status=publish,draft&orderby=title&order=ASC');
+        $choices = array(array('text' => '--Select Your Name--', 'value' => ' '));
+        foreach($posts as $post){
+            $choices[] = array('text' => $post->post_title, 'value' => $post->post_title);
+        }
+        $field->choices = $choices;
+    }
+    return $form;
+
 }
 
 

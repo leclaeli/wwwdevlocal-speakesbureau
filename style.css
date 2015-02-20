@@ -758,8 +758,8 @@ span.az-checkbox {
 	padding: 20px;
 }
 
-.widget-area aside ul,
-.widget-area aside div {
+.widget-area > aside > ul,
+.widget-area > aside > div {
 	margin: 20px;
 	padding: 0 25px;
 }
