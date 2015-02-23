@@ -408,7 +408,7 @@ function populate_dropdown ( $form ) {
             continue;
         }
         $posts = get_posts('post_type=cpt-speakers&numberposts=-1&post_status=publish,draft&orderby=title&order=ASC');
-        $choices = array(array('text' => '--Select Your Name--', 'value' => ' '));
+        $choices = array(array('text' => '-- Select Your Name --', 'value' => ' '));
         foreach($posts as $post){
             $choices[] = array('text' => $post->post_title, 'value' => $post->post_title);
         }

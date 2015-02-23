@@ -28,7 +28,7 @@ Version:        0.1
 	right: 0;
 }
 
-.sb-ul  {
+/*.sb-ul  {
 	margin: 20px;
 	padding: 0 25px;
 }
@@ -42,7 +42,7 @@ Version:        0.1
 .sb-ul  a {
   color: #fff;
 }
-
+*/
 .search-results {
   margin: 0;
   padding: 0;
@@ -731,7 +731,8 @@ span.az-checkbox {
 }
 
 .widget-area aside,
-.quick-search {
+.quick-search,
+#quick-links {
 	background: rgba(83,130,175,1);
 	background-color: #4e84b2; /* from uwm home page */
 	background: rgba(78,131,178,1);
@@ -745,11 +746,13 @@ span.az-checkbox {
 	position: relative;
 	overflow: visible;
 	margin-bottom: 40px;
+	padding-bottom: 10px;
 }
 
 .widget-area aside h3,
 .widget .widget-title,
-.quick-search h3 {
+.quick-search h3,
+#quick-links h3 {
 	background-color: #495058;
 	border-bottom: 2px solid;
 	color: #fff;
@@ -758,10 +761,16 @@ span.az-checkbox {
 	padding: 20px;
 }
 
-.widget-area > aside > ul,
-.widget-area > aside > div {
+.widget-area > aside > ul {
 	margin: 20px;
 	padding: 0 25px;
+	list-style-type: disc;
+	font-size: 16px;
+}
+
+.widget-area > aside > div,
+.widget-area > aside > p {
+	margin: 20px 20px 10px;
 }
 
 .widget-area aside ul li {
@@ -769,7 +778,21 @@ span.az-checkbox {
 }
 
 .widget-area aside ul li a {
-  color: #fff;
+	color: #fff;
+}
+
+.widget-area #quick-links {
+	margin-bottom: 0;
+}
+
+/* Events List Widget */
+.tribe-events-adv-list-widget .entry-title {
+	font-size: 16px;
+	margin: 0 0 5px;
+}
+
+.tribe-events-adv-list-widget a {
+	color: #fff;
 }
 
 /* Single Speaker's Sidebar*/

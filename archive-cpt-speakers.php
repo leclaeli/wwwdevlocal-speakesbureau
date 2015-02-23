@@ -74,14 +74,15 @@ get_header(); ?>
                     // endwhile; 
                 ?>
                 </div>
-                <div id="quick-links" class="content-column one_third last_column searchform-home">
-                    <h3>Quick Links</h3>
-                    <ul class="sb-ul">
-                        <li><a href="">Request a Speaker</a></li>
-                        <li><a href="">Become a Speaker</a></li>
-                    </ul>
-                </div>
-                
+                <div class="widget-area">
+                    <aside id="quick-links" class="content-column one_third last_column widget">
+                        <h3>Quick Links</h3>
+                        <ul class="sb-ul">
+                            <li><a href="">Request a Speaker</a></li>
+                            <li><a href="">Become a Speaker</a></li>
+                        </ul>
+                    </aside>
+                </div>               
             </header><!-- .page-header -->
 
             <div id="tabs">
