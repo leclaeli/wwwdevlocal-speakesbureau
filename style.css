@@ -335,19 +335,19 @@ span.az-checkbox {
 }
 
 #tabs article .entry-wrapper {
-	padding-left: 150px;
+	padding-left: 110px;
 }
 
 .cpt-thumbnail {
-	margin: 4px;
 	float: left;
-	max-width: 200px;
+	max-width: 90px;
 }
 
 .cpt-thumbnail img {
 	border-radius: 50%;
 	border: 3px solid #fff;
 	box-shadow: 0 0 1px #bbb;
+	max-width: 100%;
 }
 
 #speaker-container p a,

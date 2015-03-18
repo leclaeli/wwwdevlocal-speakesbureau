@@ -2,8 +2,8 @@ jQuery(document).ready(function($) {
   
     // disable presentation selection before speaker is selected
     $(".populate-posts select").prop("disabled", true);
-    $("#gform_fields_6").on('change', '#input_6_3', function(){ 
-      var spkPostId = $("#input_6_3").val();
+    $("#gform_fields_3").on('change', '#input_3_1', function(){ 
+      var spkPostId = $("#input_3_1").val();
       console.log(spkPostId);
       jQuery.ajax(myAjax.ajaxurl,{
         type: "post",

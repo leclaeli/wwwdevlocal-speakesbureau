@@ -397,10 +397,10 @@ function myplugin_meta_box_callback( $post ) {
 ** form to also include post_status = 'draft'
 */
 
-add_filter( 'gform_pre_render_3', 'populate_dropdown' );
-add_filter( 'gform_pre_validation_3', 'populate_dropdown' );
-add_filter( 'gform_pre_submission_filter_3', 'populate_dropdown' );
-add_filter( 'gform_admin_pre_render_3', 'populate_dropdown' );
+add_filter( 'gform_pre_render_2', 'populate_dropdown' );
+add_filter( 'gform_pre_validation_2', 'populate_dropdown' );
+add_filter( 'gform_pre_submission_filter_2', 'populate_dropdown' );
+add_filter( 'gform_admin_pre_render_2', 'populate_dropdown' );
 
 function populate_dropdown ( $form ) {
     foreach($form['fields'] as &$field) {
@@ -416,6 +416,15 @@ function populate_dropdown ( $form ) {
     }
     return $form;
 
+}
+
+add_filter('tribe_get_events_title', 'change_upcoming_events_title');
+function change_upcoming_events_title($title) {
+    //We'll change the title on upcoming and map views
+    //if (tribe_is_upcoming() or tribe_is_map() or tribe_is_photo()) return 'Upcoming Parties';
+ 
+    //In all other circumstances, leave the original title in place
+    return 'Engagements';
 }
 
 

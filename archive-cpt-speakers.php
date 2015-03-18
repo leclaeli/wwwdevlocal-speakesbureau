@@ -106,8 +106,6 @@ get_header(); ?>
                                 <div class="cpt-thumbnail">
                                     <a href="<?php echo get_permalink(); ?>"><?php the_post_thumbnail('speakers-thumb'); ?></a>
                                 </div>
-    
-                            
                             <?php  } else { ?>
                             <div class="cpt-thumbnail">
                                 <a href="<?php echo get_permalink(); ?>" rel="bookmark"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/profile-default-thumb.jpg" alt="Default profile picture - graphic of person" title="Default profile picture"></a>
@@ -124,52 +122,48 @@ get_header(); ?>
                                 <?php if( get_field('department') ): ?>
                                     <span><?php echo ', ' . get_field('department'); ?></span></p>
                                 <?php endif; ?>
-                                    
-                                   
+                                <?php
+                                // args
+                                $postid = get_the_ID();
+                                //echo $my_slug;
+                                $args = array(
+                                    'numberposts' => -1,
+                                    'post_type' => 'cpt-presentations',
+                                    'meta_query' => array(
+                                        'relation' => 'OR',
+                                            array(
+                                                'key' => 'speaker_name',
+                                                'value' => $postid,
+                                                'compare' => 'LIKE'
+                                            )
+                                        )
+                                        
+                                );
 
-<?php
-// args
-$postid = get_the_ID();
-//echo $my_slug;
-$args = array(
-    'numberposts' => -1,
-    'post_type' => 'cpt-presentations',
-    'meta_query' => array(
-        'relation' => 'OR',
-            array(
-                'key' => 'speaker_name',
-                'value' => $postid,
-                'compare' => 'LIKE'
-            )
-        )
-        
-);
+                                // get results
+                                $the_query = new WP_Query( $args );
 
+                                // The Loop
+                                ?>
+                                <?php if( $the_query->have_posts() ): ?>
+                                    <span class="dashicons dashicons-format-aside"></span><h5 id="speaker-presentations">Presentations:</h5>
+                                    <ul>
+                                    <?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
+                                        <li>
+                                            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                                            <?php $term_list = get_the_term_list( $post->ID, 'topics', '', ', ' );
+                                                if ($term_list) {
+                                                    //echo '<div><p>' . $term_list . '</p></div>';
+                                                }
+                                            ?>
+                                        
+                                        </li>
+                                    <?php endwhile; ?>
+                                    </ul>
+                                <?php endif; ?>
 
-// get results
-$the_query = new WP_Query( $args );
-
-// The Loop
-?>
-<?php if( $the_query->have_posts() ): ?>
-    <span class="dashicons dashicons-format-aside"></span><h5 id="speaker-presentations">Presentations:</h5>
-    <ul>
-    <?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
-        <li>
-            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-            <?php $term_list = get_the_term_list( $post->ID, 'topics', '', ', ' );
-                if ($term_list) {
-                    //echo '<div><p>' . $term_list . '</p></div>';
-                }
-            ?>
-        
-        </li>
-    <?php endwhile; ?>
-    </ul>
-<?php endif; ?>
-
-<?php wp_reset_query();  // Restore global post data stomped by the_post(). ?>
-                                    
+                                <?php wp_reset_query();  // Restore global post data stomped by the_post(). ?>
+                                                                    
 
                                 <?php $term_list = get_the_term_list( $post->ID, 'topics', '', ', ' );
                                     if ($term_list) {
@@ -180,11 +174,6 @@ $the_query = new WP_Query( $args );
                                     //     echo '<div><h5 id="speaker-keywords">Keywords:</h5><p>' . $tag_list . '</p></div>';
                                     // }
                                 ?>
-
-
-
-
-
 
                                     <?php //twentythirteen_entry_meta(); ?>
                                
@@ -249,8 +238,6 @@ $the_query = new WP_Query( $args );
                     </ul> -->
                 </div>
                 <div id="presentations">
-                    List of presentations:
-
                     <ul>
                     <?php
                         $pres_args = array( 'numberposts' => -1, 'post_type' => 'cpt-presentations' );
@@ -258,6 +245,20 @@ $the_query = new WP_Query( $args );
                         foreach ( $myposts as $post ) : setup_postdata( $post ); ?>
                             <li class="pres-item">
                                 <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                                <ul>
+                                    <?php 
+                                        $presentor_id = get_field('speaker_name');
+                                        $presentor = get_the_title( $presentor_id[0] );
+                                        $presentor_link = get_permalink( $presentor_id[0] );
+                                    ?>
+                                    <li>Speaker: <a href="<?php echo $presentor_link; ?>"><?php  echo $presentor; ?></a></li>
+                                    <?php
+                                        $term_list = get_the_term_list( $post->ID, 'topics', '', ', ' );
+                                        if ($term_list) {
+                                            echo '<li>Topics: ' .  $term_list . '</li>';
+                                        }
+                                    ?>
+                                </ul>
                             </li>
                         <?php endforeach; 
                         wp_reset_postdata();?>
