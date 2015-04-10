@@ -12,8 +12,7 @@ jQuery(document).ready(function($) {
           spkPostId: spkPostId,
         },
         success: function(data, textStatus, XMLHttpRequest){
-          //jQuery("#test-div1").html('');
-      
+
             $(".populate-posts select").empty();
             $('.chosen-drop .chosen-results').empty();
             var options = $.parseJSON(data);
@@ -24,8 +23,28 @@ jQuery(document).ready(function($) {
                     }
             $(".populate-posts select").prop("disabled", false);
             $('.populate-posts select').trigger('chosen:updated');
-            //$("#input_6_2_chosen").prop("disabled", false);
-            // $("#input_6_2_chosen").removeClass('chosen-disabled');
+        },
+        error: function(MLHttpRequest, textStatus, errorThrown){
+          alert(errorThrown);
+        }
+      });
+    });
+
+
+    $("#gform_fields_4").on('change', '#input_4_16', function(){ 
+      var eventIDstr = $("#input_4_16").val();
+      var eventID = eventIDstr.substring( eventIDstr.indexOf('-') + 1 );
+      jQuery.ajax(myAjax.ajaxurl,{
+        type: "post",
+        data: {
+          action: 'newAjaxFunction',
+          eventID: eventID,
+        },
+        success: function(data, textStatus, XMLHttpRequest){
+
+            var newResults = $.parseJSON(data);
+            console.log(newResults);
+            $('#input_4_1').val( newResults );
         },
         error: function(MLHttpRequest, textStatus, errorThrown){
           alert(errorThrown);

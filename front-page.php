@@ -39,7 +39,7 @@ get_header(); ?>
 							'smallest'                  => 12, 
 							'largest'                   => 26,
 							'unit'                      => 'px', 
-							'number'                    => 25,  
+							'number'                    => 22,  
 							'format'                    => 'flat',
 							'separator'                 => "\n",
 							'orderby'                   => 'name', 
@@ -53,8 +53,9 @@ get_header(); ?>
 							'child_of'                  => null, // see Note!
 						); ?>
 						<div id="tag-cloud">
-							<h4>Topic Keywords</h4>
+							<h4>Keyword Cloud</h4>
 							<?php wp_tag_cloud($cloud_args); ?>
+                            <i class="fa fa-cloud"></i>
 						</div>
 						<?php wp_link_pages( array( 'before' => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentythirteen' ) . '</span>', 'after' => '</div>', 'link_before' => '<span>', 'link_after' => '</span>' ) ); ?>
 					</div><!-- .entry-content -->

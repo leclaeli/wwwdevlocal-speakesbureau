@@ -2,6 +2,7 @@
 require_once( get_stylesheet_directory() . '/custom-post-types.php' );
 require_once( get_stylesheet_directory() . '/gw-gravity-forms-map-fields-to-field.php' );
 require_once( get_stylesheet_directory() . '/gravity-forms-custom-post-types/gfcptaddon.php' );
+require_once( get_stylesheet_directory() . '/default-featured-image/set-default-featured-image.php' );
 
 // Add class to body on cpt pages
 
@@ -19,6 +20,7 @@ function add_sidebar_class( $classes ) {
 }
 add_filter( 'body_class', 'add_sidebar_class' );
 
+
 /* Count the number of views each post gets*/
 
 function getPostViews($postID){
@@ -31,6 +33,7 @@ function getPostViews($postID){
     }
     return $count.' Views';
 }
+
 function setPostViews($postID) {
     $count_key = 'post_views_count';
     $count = get_post_meta($postID, $count_key, true);
@@ -44,6 +47,7 @@ function setPostViews($postID) {
     }
 }
 
+
 /* Set Cookie for one month that will prevent page refreshes from counting towards post views*/
 
 function set_new_cookie() {
@@ -51,37 +55,6 @@ function set_new_cookie() {
     setcookie("TestCookie", "popular_post_counter", time()+3600*24*30);
 }
 add_action('init', 'set_new_cookie');
-
-
-/*
-*  Loop through post objects (assuming this is a multi-select field) ( setup postdata )
-*  Using this method, you can use all the normal WP functions as the $post object is 
-*  temporarily initialized within the loop
-*  Read more: http://codex.wordpress.org/Template_Tags/get_posts#Reset_after_Postlists_with_offset
-*/
-// function display_topics($separator = "")
-// {
-//     global $post;
-//     $post_objects = get_field('acf_topics');
-//     $i=0;
-//     if($post_objects):
-//         foreach($post_objects as $post): // variable must be called $post (IMPORTANT)
-//             setup_postdata($post);
-//             $my_permalink = get_permalink();
-//             echo "<a href=" . esc_url($my_permalink) . ">";
-//             $my_title = get_the_title();
-//             if ($i>0) {
-//                 echo $separator . $my_title;
-//             } else {
-//                 echo $my_title;
-//             }
-//             echo "</a>";
-//             $i++;
-//         endforeach;
-//         echo '</span>';
-//         wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly
-//     endif;
-// }
 
 
 /**
@@ -127,6 +100,7 @@ function twentythirteen_entry_meta() {
     }
 }
 
+
 /* Change default excerpt length */
 
 function new_custom_excerpt_length( $length ) {
@@ -149,6 +123,7 @@ function add_custom_types_to_tax( $query ) {
 }
 add_filter( 'pre_get_posts', 'add_custom_types_to_tax' );
 
+
 /* Change order for speakers archive page */
 // Runs before the posts are fetched
 add_filter( 'pre_get_posts' , 'my_change_order' );
@@ -167,7 +142,9 @@ function my_change_order( $query ) {
     return $query;
 }
 
+
 /* Update ACF Fields with Speaker Registration Form input */
+
 add_action("gform_after_submission_1", "acf_post_submission", 10, 2);
  
 function acf_post_submission ($entry, $form) {
@@ -198,8 +175,8 @@ function acf_post_submission ($entry, $form) {
     }
 }
 
-/* Update Presentation Posts with Gravity Form input */
-add_action("gform_after_submission_3", "acf_presentation_submission", 10, 2);
+// Update Presentation Posts with Gravity Form input 
+add_action("gform_after_submission_2", "acf_presentation_submission", 10, 2);
  
 function acf_presentation_submission( $entry, $form ) {
     $post_id = $entry["post_id"];
@@ -237,48 +214,94 @@ function acf_presentation_submission( $entry, $form ) {
         $count++;
     }
     update_field( 'field_54ae90e29986f', $value, $post_id );
-    //echo '<pre>'; print_r($value); echo '</pre>';
 }
 
-/* Add custom image size */
+/* Update Events Posts with Gravity Form input */
+
+// add_action('init', 'my_custom_init');
+// function my_custom_init() {
+//     add_post_type_support( 'tribe_events', 'custom-fields' );
+// }
+
+// add_action('save_post', 'save_tec_event_meta_from_gravity', 11, 2);
+// function save_tec_event_meta_from_gravity( $postId, $post ) {
+//     if( class_exists('TribeEvents') ) {
+//         // only continue if it's an event post
+//         if ( $post->post_type != TribeEvents::POSTTYPE || defined('DOING_AJAX') ) {
+//             return;
+//         }
+//         // don't do anything on autosave or auto-draft either or massupdates
+//         // if ( wp_is_post_autosave( $postId ) || $post->post_status  'auto-draft' || isset($_GET['bulk_edit']) || $_REQUEST['action']  'inline-save' ) {
+//         //     return;
+//         // }
+//         if( class_exists('TribeEventsAPI') ) {
+//             TribeEventsAPI::saveEventMeta($postId, $_POST, $post);
+//         }
+//     }
+// }
+
+// add_action("gform_after_submission_3", "request_speaker_submission", 10, 2);
+// function request_speaker_submission( $entry, $form ) {
+//     $post_id = $entry["post_id"];
+//     $custom_fields = get_post_custom( $post_id );
+//     print_r($custom_fields);
+// }
+
+// // Format Date from gravity forms to events plugin
+// add_action("gform_pre_submission", "format_event_date");
+
+// function format_event_date($form){
+//     $formId = 3; // this is the gavity forms id
+//     $startDateFormId = 8; // this is the form element that contains the date of the form ‘mm/dd/yyyy’ $_POST['input_3']
+//     $endDateFormId = 10;
+//     $startTimeFormId = 9; // form element for the start time $_POST['input_4'][0] – for hour, $_POST['input_4'][1] – for minute, $_POST['input_4'][2] – for meridian
+//     $endTimeFormId = 11; // form element for the start time $_POST['input_5'][0] – for hour, $_POST['input_5'][1] – for minute, $_POST['input_5'][2] – for meridian
+//     if( $form["id"] != $formId ) {
+//         return;
+//     }
+
+//     $startDate = date_parse($_POST['input_' . $startDateFormId]); // break the date into an array
+//     $endDate = date_parse($_POST['input_' . $endDateFormId]); // break the date into an array
+//     // sql format the result
+//     $startDateString = $startDate['year'] . '-' . str_pad($startDate['month'], 2, "0", STR_PAD_LEFT) . '-' . str_pad($startDate['day'], 2, "0", STR_PAD_LEFT);
+//     $endDateString = $endDate['year'] . '-' . str_pad($endDate['month'], 2, "0", STR_PAD_LEFT) . '-' . str_pad($endDate['day'], 2, "0", STR_PAD_LEFT);
+//     // get the start/end times
+//     $startTime = $_POST['input_' . $startTimeFormId];
+//     $endTime = $_POST['input_' . $endTimeFormId];
+//     $startMinute = floor( $startTime[1] / 5 ) * 5;
+//     $endMinute = floor( $endTime[1] / 5 ) * 5;
+
+//     // load the values for EventsCalendarPro
+//     $_POST['EventStartDate'] = $startDateString;
+//     $_POST['EventStartHour'] = str_pad($startTime[0], 2, "0", STR_PAD_LEFT);
+//     //$_POST['EventStartMinute'] = str_pad($startTime[1], 2, "0", STR_PAD_LEFT);
+//     $_POST['EventStartMinute'] = $startMinute;
+//     $_POST['EventStartMeridian'] = $startTime[2];
+//     $_POST['EventEndDate'] = $endDateString;
+//     $_POST['EventEndHour'] = str_pad($endTime[0], 2, "0", STR_PAD_LEFT);
+//     //$_POST['EventEndMinute'] = str_pad($endTime[1], 2, "0", STR_PAD_LEFT);
+//     $_POST['EventEndMinute'] = $endMinute;
+//     $_POST['EventEndMeridian'] = $endTime[2];
+// }
+
+// $custom_fields = get_post_custom( 897 );
+//print_r($custom_fields);
+
+
+/* Add custom image sizes */
 add_image_size( 'homepage-thumb', 64, 64, array('center','top') ); // (cropped)
 add_image_size( 'speakers-thumb', 128, 128, array('center','top') ); // (cropped)
 add_image_size( 'speakers-single', 225, 275, array('center','top') ); // (cropped)
 
-// add_filter('gform_pre_render_6', 'populate_posts');
 
-//     function populate_posts($form) {
+/* 
+** Ajax Functions
+*/
 
-//         foreach($form['fields'] as &$field){
-            
-//             if($field['type'] != 'select' || strpos($field['cssClass'], 'populate-posts') === false)
-//                 continue;
-            
-//             // you can add additional parameters here to alter the posts that are retreieved
-//             // more info: http://codex.wordpress.org/Template_Tags/get_posts
-//             $posts = get_posts('numberposts=-1&post_status=publish');
-            
-//             // update 'Select a Post' to whatever you'd like the instructive option to be
-//             $choices = array(array('text' => 'Select a Post', 'value' => ' '));
-            
-//             foreach($posts as $post){
-//                 $choices[] = array('text' => $post->post_title, 'value' => $post->post_title);
-//             }
-            
-//             $field['choices'] = $choices;
-            
-//         }
-        
-//         return $form;
-//     }
-
-
-/* Ajax Functions */
 function MyAjaxFunction(){
     //get the data from ajax() call
     $spkPostID = $_POST['spkPostId'];
     $results = "<h2>".$spkPostID."</h2>";
-
     $args = array(
         'numberposts' => -1,
         'post_type' => 'cpt-presentations',
@@ -292,9 +315,7 @@ function MyAjaxFunction(){
                 )
             )   
         );
-   
     $posts = get_posts( $args );
-   
         $choices = array(array('text' => 'Select a Presentation', 'value' => ' '));
         foreach($posts as $post){
             $choices[] = array('text' => $post->post_title, 'value' => $post->post_title);
@@ -302,10 +323,20 @@ function MyAjaxFunction(){
     echo json_encode( $choices );
     die;
 }
+// creating Ajax call for WordPress
+add_action( 'wp_ajax_nopriv_MyAjaxFunction', 'MyAjaxFunction' );
+add_action( 'wp_ajax_MyAjaxFunction', 'MyAjaxFunction' );
 
-  // creating Ajax call for WordPress
-   add_action( 'wp_ajax_nopriv_MyAjaxFunction', 'MyAjaxFunction' );
-   add_action( 'wp_ajax_MyAjaxFunction', 'MyAjaxFunction' );
+// Feedback Form Update Fields.
+function newAjaxFunction() {
+    $eventID = $_POST['eventID'];
+    //$venue_website = tribe_get_venue_website_link( 901 );
+    $end_date = tribe_get_end_date( $eventID, false,'m/d/Y' );
+    echo json_encode( $end_date );
+    die;
+}
+add_action( 'wp_ajax_nopriv_newAjaxFunction', 'newAjaxFunction' );
+add_action( 'wp_ajax_newAjaxFunction', 'newAjaxFunction' );
 
 
 /* Limit number of choices on Gravity form select field */
@@ -330,16 +361,13 @@ function set_chosen_options($form){
     return $form;
 }
 
-
 /**
  * Adds a list of presentations to the edit page of each speaker's.
  */
+
 function myplugin_add_meta_box() {
-
     $screens = array( 'cpt-speakers' );
-
     foreach ( $screens as $screen ) {
-
         add_meta_box(
             'myplugin_sectionid',
             __( 'Presentations', 'myplugin_textdomain' ),
@@ -352,11 +380,9 @@ add_action( 'add_meta_boxes', 'myplugin_add_meta_box' );
 
 /**
  * Prints the box content.
- * 
  * @param WP_Post $post The object for the current post/page.
  */
 function myplugin_meta_box_callback( $post ) {
-
     // args
     $current_id = $post->ID;    
     $args = array(
@@ -392,6 +418,7 @@ function myplugin_meta_box_callback( $post ) {
     <?php wp_reset_query();  // Restore global post data stomped by the_post().    
 }
 
+
 /*
 ** Dynamically Populate the "Name of Speaker" field on the "Add a Presentation" 
 ** form to also include post_status = 'draft'
@@ -418,27 +445,74 @@ function populate_dropdown ( $form ) {
 
 }
 
+/*
+** Dynamically Populate the "Event" field on the "Feedback Form" 
+** Event must have already happened.
+*/
+
+add_filter( 'gform_pre_render_4', 'populate_event_dropdown' );
+add_filter( 'gform_pre_validation_4', 'populate_event_dropdown' );
+add_filter( 'gform_pre_submission_filter_4', 'populate_event_dropdown' );
+add_filter( 'gform_admin_pre_render_4', 'populate_event_dropdown' );
+
+function populate_event_dropdown ( $form ) {
+    foreach($form['fields'] as &$field) {
+        if ( $field->type != 'select' || strpos( $field->cssClass, 'select-event' ) === false ) {
+            continue;
+        }
+        date_default_timezone_set('America/Chicago');
+        $end_date = date( 'Y-m-d H:i:s' ); 
+        $past_events = array (
+            'post_type' => 'tribe_events',
+            'meta_query' => array(
+                array(
+                    'key'     => '_EventEndDate',
+                    'value'   => $end_date,
+                    'compare' => '<=',
+                )
+            ),
+            'posts_per_page' => -1
+        );
+        $posts = get_posts( $past_events );
+        $choices = array(array('text' => '-- Select Event --', 'value' => ' '));
+        foreach($posts as $post){
+            $choices[] = array( 'text' => $post->post_title, 'value' => $post->post_title . '-' . $post->ID );
+        }
+        $not_listed = array('text' => '*Not Listed*', 'value' => 'Not Listed');
+        array_push( $choices, $not_listed );
+        
+        $field->choices = $choices;
+    }
+    return $form;
+
+}
+
+/* gform_pre_submission will do all forms. gform_pre_submission_1 will do a form with an ID of 1
+* Keep an eye on the priority of the filter. In this case I used 9 because the Salesforce plugin we used ran a presubmission filter at 10 so we needed this to happen before it
+*/
+add_filter( "gform_pre_submission_4", "add_salesforce_campaign_id_footer", 9 );
+function add_salesforce_campaign_id_footer( $form ){
+    foreach($form["fields"] as &$field)
+    if($field["id"] == 1){
+    /* Set the variable you want here - in some cases you might need a switch based on the page ID.
+    * $page_id = get_the_ID();
+    */
+    $campaign_id = '701200000004SuO';
+    /* Do a View Source on the page with the Gravity Form and look for the name="" for the field you want */
+    $_POST["input_1"] = date( 'Y-m-d' );
+    }
+    return $form;
+} 
+
+
+/*
+** Change The Events Calendar to "Upcoming Engagements" instead of Events
+*/
+
 add_filter('tribe_get_events_title', 'change_upcoming_events_title');
 function change_upcoming_events_title($title) {
     //We'll change the title on upcoming and map views
-    //if (tribe_is_upcoming() or tribe_is_map() or tribe_is_photo()) return 'Upcoming Parties';
- 
+    //if (tribe_is_upcoming() or tribe_is_map() or tribe_is_photo()) return 'Upcoming Engagements';
     //In all other circumstances, leave the original title in place
     return 'Engagements';
 }
-
-
-
-// function get_http() {
-//     $url = 'http://wwwdevlocal.uwm.edu/summer-courses/plugins/';
-
-//     $request = new WP_Http;
-//     $result = $request->request($url);
-//     $content = array();
-//     var_dump($result);
-//     if (isset($result->errors)) {
-//         // display error message of some sort
-//     } else {
-//         $content = $result['body'];
-//     }
-// }

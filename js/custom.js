@@ -21,6 +21,12 @@ jQuery(document).ready(function ($) {
             }
         });
     });
+
+     $('#menu-main-navigation-menu li:nth-child(2)').click(function(event) {
+        $('#tabs').tabs({ active: 1 });
+    });
+        
+        
  
     // Get the title and selector for active tab
     var tabTitle; 
@@ -35,7 +41,7 @@ jQuery(document).ready(function ($) {
                     tabTitle = "#topics .cat-item";
                     break;
                 case 2:
-                    tabTitle = "#presentations li";
+                    tabTitle = "#presentations .pres-item";
                     break;
             }
         

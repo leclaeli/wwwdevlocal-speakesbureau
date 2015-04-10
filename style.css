@@ -48,6 +48,10 @@ Version:        0.1
   padding: 0;
 }
 
+/* Keep links blue */
+.ui-widget-content a {
+	color: #2455c3;
+}
 
 /* Home Page */
 
@@ -61,16 +65,46 @@ Version:        0.1
 
 /* Tag Cloud */
 #tag-cloud {
-  padding: 20px;
-  text-align: center;
-  background: #ececec;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+	padding: 20px;
+	text-align: center;
+	background: #ececec;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	position: relative;
+	min-height: 300px;
+}
+
+/*#tag-cloud:before {
+	color: #f1f1f1;
+	
+	font: 176px/1 FontAwesome;
+	margin-left: -50%;
+	position: absolute;
+	top: 100px;
+	width: 320px;
+	z-index: -1;
+}*/
+
+#tag-cloud a {
+	z-index: 10;
+	position: relative;
+}
+
+.fa-cloud::before {
+	content: "";
+	font-size: 140px;
+	position: absolute;
+	width: 100%;
+	z-index: 0;
+	left: 0;
+	top: 100px;
+	color: #ccc;
+	opacity: .4;
 }
 
 #tag-cloud h4 {
-  text-align: left;
-  font-weight: 300;
+	text-align: left;
+	font-weight: 300;
 }
 
 /* Collapsable Info */
@@ -186,6 +220,10 @@ Version:        0.1
 }
 
 #featured-home a {
+	color: #f1f1f1;
+}
+
+#featured-home a:hover {
 	color: #fff;
 }
 
@@ -196,7 +234,7 @@ Version:        0.1
 
 
 
-/* Speakers and Topics */
+/* Speakers, Topics, Presentations Page */
 
 .entry-header,
 .page-header {
@@ -475,14 +513,41 @@ span.az-checkbox {
 }
 
 /* Topics */
-#topics ul {
+
+	#topics ul {
 }
+
+/* Presentations */
+
+#presentations > ul {
+	padding: 0;
+}
+
+.pres-item {
+	padding: 10px;
+}
+
+.pres-item:hover {
+	background: #f1f1f1;
+}
+
+.pres-title {
+}
+
+.pres-meta li {
+	font-size: 12px;
+}
+
+.pres-meta li a {
+	color: #4981FF;
+}
+
 
 
 /* Home Page Questions Tabs */
 
 .home .full_width.collapse-info {
-	margin-bottom: 20px;
+	margin: 30px 0 20px;
 }
 
 .home .ui-tabs {
@@ -793,6 +858,12 @@ span.az-checkbox {
 
 .tribe-events-adv-list-widget a {
 	color: #fff;
+}
+
+.tribe-events-adv-list-widget h3:before {
+	content: "\f133";
+	font: 18px/1 FontAwesome;
+	padding-right: 10px;
 }
 
 /* Single Speaker's Sidebar*/

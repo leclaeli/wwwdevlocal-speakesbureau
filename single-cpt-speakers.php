@@ -16,9 +16,9 @@ get_header(); ?>
 			<?php while ( have_posts() ) : the_post(); ?>
 				
 				<?php
-if (!isset($_COOKIE['TestCookie'])) {
-    setPostViews(get_the_ID());
-}
+				if (!isset($_COOKIE['TestCookie'])) {
+					setPostViews(get_the_ID());
+				}
 
 				  ?>
 

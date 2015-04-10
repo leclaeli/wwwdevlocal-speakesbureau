@@ -78,8 +78,8 @@ get_header(); ?>
                     <aside id="quick-links" class="content-column one_third last_column widget">
                         <h3>Quick Links</h3>
                         <ul class="sb-ul">
-                            <li><a href="">Request a Speaker</a></li>
-                            <li><a href="">Become a Speaker</a></li>
+                            <li><a href="<?php echo get_site_url(); ?>/request-a-speaker/">Request a Speaker</a></li>
+                            <li><a href="<?php echo get_site_url(); ?>/become-a-speaker/">Become a Speaker</a></li>
                         </ul>
                     </aside>
                 </div>               
@@ -108,7 +108,7 @@ get_header(); ?>
                                 </div>
                             <?php  } else { ?>
                             <div class="cpt-thumbnail">
-                                <a href="<?php echo get_permalink(); ?>" rel="bookmark"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/profile-default-thumb.jpg" alt="Default profile picture - graphic of person" title="Default profile picture"></a>
+                                <a href="<?php echo get_permalink(); ?>" rel="bookmark"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/profile-default-thumb.jpg" alt="Default profile picture - UWM Logomark" title="Default profile picture"></a>
                             </div>
                             <?php } ?>
                             <div class="entry-wrapper">
@@ -240,12 +240,12 @@ get_header(); ?>
                 <div id="presentations">
                     <ul>
                     <?php
-                        $pres_args = array( 'numberposts' => -1, 'post_type' => 'cpt-presentations' );
+                        $pres_args = array( 'numberposts' => -1, 'post_type' => 'cpt-presentations', 'orderby' => 'name', 'order' => 'ASC' );
                         $myposts = get_posts( $pres_args );
                         foreach ( $myposts as $post ) : setup_postdata( $post ); ?>
                             <li class="pres-item">
-                                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                <ul>
+                                <a href="<?php the_permalink(); ?>" class="pres-title"><?php the_title(); ?></a>
+                                <ul class="pres-meta">
                                     <?php 
                                         $presentor_id = get_field('speaker_name');
                                         $presentor = get_the_title( $presentor_id[0] );
