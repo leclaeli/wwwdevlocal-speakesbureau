@@ -516,3 +516,17 @@ function change_upcoming_events_title($title) {
     //In all other circumstances, leave the original title in place
     return 'Engagements';
 }
+
+
+/*
+** Set default image only on cpt-speakers posts
+*/
+
+function dfi_posttype ( $dfi_id, $post_id ) {
+  $post = get_post($post_id);
+  if ( 'cpt-speakers' === $post->post_type ) {
+    return $dfi_id; // the image id
+  }
+  return null; // the original featured image id
+}
+add_filter( 'dfi_thumbnail_id', 'dfi_posttype', 10, 2 );
